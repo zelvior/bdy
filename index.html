@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Happy Birthday! 🎂</title>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@400;600;700&display=swap');
+
+        :root {
+            --gold-main: #f59e0b;
+            --gold-light: #fcd34d;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 50%, #fce7f3 100%);
+            height: 100vh;
+            height: 100dvh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            margin: 0;
+            touch-action: manipulation;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-radius: 2rem;
+            border: 2px solid rgba(255, 255, 255, 0.6);
+            padding: 2rem;
+            text-align: center;
+            width: 90%;
+            max-width: 420px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+            position: relative;
+            z-index: 10;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .script-font {
+            font-family: 'Dancing Script', cursive;
+        }
+
+        .floating-item {
+            position: absolute;
+            pointer-events: none;
+            z-index: 1;
+            animation: moveUp 4s linear forwards;
+        }
+
+        @keyframes moveUp {
+            0% { transform: translateY(110vh) scale(0) rotate(0deg); opacity: 0; }
+            20% { opacity: 0.85; }
+            100% { transform: translateY(-20vh) scale(1.5) rotate(360deg); opacity: 0; }
+        }
+
+        .shake {
+            animation: shake 0.3s ease-in-out;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        .btn-container {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            align-items: center;
+            margin-top: 2rem;
+            min-height: 80px;
+        }
+
+        #no-btn {
+            transition: all 0.15s ease-out;
+            white-space: nowrap;
+        }
+
+        .pulse-cake {
+            font-size: 4rem;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        .candles {
+            display: inline-flex;
+            gap: 4px;
+            margin-bottom: 0.5rem;
+        }
+
+        @keyframes flicker {
+            0%, 100% { transform: scaleY(1) rotate(-2deg); }
+            50% { transform: scaleY(1.2) rotate(2deg); }
+        }
+
+        .candle-flame {
+            display: inline-block;
+            animation: flicker 0.6s ease-in-out infinite;
+            animation-delay: calc(var(--i) * 0.15s);
+        }
+    </style>
+</head>
+<body>
+
+    <div id="bg-floats" class="fixed inset-0 pointer-events-none"></div>
+
+    <!-- Loader Card -->
+    <div id="loader-card" class="glass-card">
+        <div class="pulse-cake">🎂</div>
+        <h2 class="text-xl font-bold text-amber-600 mt-4">Baking the cake...</h2>
+        <div class="w-full bg-amber-100 h-2 rounded-full mt-6 overflow-hidden">
+            <div id="fill" class="h-full bg-amber-400 w-0 transition-all duration-1000"></div>
+        </div>
+        <p id="status-text" class="text-amber-400 text-xs mt-3 uppercase tracking-widest">Lighting the candles</p>
+    </div>
+
+    <!-- Main Card -->
+    <div id="main-card" class="glass-card hidden opacity-0 translate-y-10">
+        <div class="candles">
+            <span class="candle-flame" style="--i:0">🕯️</span>
+            <span class="candle-flame" style="--i:1">🕯️</span>
+            <span class="candle-flame" style="--i:2">🕯️</span>
+        </div>
+        <div class="text-5xl mb-2">🎂</div>
+        <h1 class="text-3xl font-bold text-gray-800 mb-1">Happy Birthday, <span id="to-name" class="script-font text-amber-500 text-4xl">Star</span>!</h1>
+        <p class="text-gray-600 text-sm md:text-base leading-relaxed mb-6">
+            Today is all about you — your laugh, your light, and every little thing that makes you so wonderfully you. I'm so grateful you were born. Wishing you a day as magical as you are. 🌟
+        </p>
+        <h2 class="text-xl font-bold text-gray-800 mb-8">Ready to make a wish and blow out the candles?</h2>
+
+        <div class="btn-container flex-col sm:flex-row">
+            <button id="yes-btn" class="bg-amber-400 hover:bg-amber-500 text-white px-8 py-3 rounded-2xl font-bold text-lg shadow-lg transform transition active:scale-90 w-full">
+                Make a Wish! 🎉
+            </button>
+            <button id="no-btn" class="bg-white border-2 border-amber-200 text-amber-400 px-8 py-3 rounded-2xl font-bold text-lg w-full">
+                Not yet
+            </button>
+        </div>
+        
+        <p class="mt-8 text-xs text-gray-400 italic">With love & cake, <span id="from-name">Someone special</span></p>
+    </div>
+
+    <!-- Celebration Card -->
+    <div id="success-card" class="glass-card hidden opacity-0 translate-y-10">
+        <div class="text-6xl mb-4">🥳</div>
+        <h1 class="text-4xl font-bold text-amber-500 script-font mb-4">Wish Made!</h1>
+        <p class="text-gray-700 mb-6">
+            The universe heard you! May every dream you blew into that flame come true this year. Happy Birthday! 🎊
+        </p>
+        <div class="bg-amber-50 p-4 rounded-xl mb-6">
+            <p class="text-amber-600 font-semibold italic">"May your day be as golden as you are."</p>
+        </div>
+        <button onclick="location.reload()" class="text-amber-400 text-xs font-bold uppercase tracking-widest hover:text-amber-600">Celebrate Again</button>
+    </div>
+
+    <script>
+    // ==========================================
+    // CONFIGURATION
+    // ==========================================
+    const EMAILJS_PUBLIC_KEY = "YOUR_PUBLIC_KEY";
+    const EMAILJS_SERVICE_ID = "YOUR_SERVICE_ID";
+    const EMAILJS_TEMPLATE_ID = "YOUR_TEMPLATE_ID";
+    // ==========================================
+
+    (function() {
+        emailjs.init(EMAILJS_PUBLIC_KEY);
+    })();
+
+    const params = new URLSearchParams(window.location.search);
+    const to = params.get('to') || 'Star';
+    const from = params.get('from') || 'Someone Special';
+
+    document.getElementById('to-name').innerText = to;
+    document.getElementById('from-name').innerText = from;
+
+    window.addEventListener('load', () => {
+        const fill = document.getElementById('fill');
+        const status = document.getElementById('status-text');
+        
+        setTimeout(() => {
+            fill.style.width = '100%';
+            setTimeout(() => { status.innerText = "Candles lit: Ready! 🕯️"; }, 1000);
+        }, 500);
+
+        setTimeout(() => {
+            const loaderCard = document.getElementById('loader-card');
+            const mainCard = document.getElementById('main-card');
+            
+            loaderCard.classList.add('opacity-0', 'scale-90');
+            setTimeout(() => {
+                loaderCard.classList.add('hidden');
+                mainCard.classList.remove('hidden');
+                setTimeout(() => {
+                    mainCard.classList.remove('opacity-0', 'translate-y-10');
+                }, 50);
+            }, 500);
+        }, 3500);
+    });
+
+    // Floating birthday items
+    function createFloat() {
+        const el = document.createElement('div');
+        el.innerHTML = ['🎈', '🎉', '✨', '🎊', '⭐', '🌟', '🍰'][Math.floor(Math.random() * 7)];
+        el.className = 'floating-item';
+        el.style.left = Math.random() * 100 + 'vw';
+        el.style.animationDuration = (Math.random() * 2 + 3) + 's';
+        el.style.fontSize = (Math.random() * 15 + 15) + 'px';
+        document.getElementById('bg-floats').appendChild(el);
+        setTimeout(() => el.remove(), 4000);
+    }
+    setInterval(createFloat, 300);
+
+    // Playful No Button Logic
+    const noBtn = document.getElementById('no-btn');
+    let noCount = 0;
+    const noMessages = ["Not yet", "Are you sure?", "Really? 🥺", "The cake is waiting!", "Just one wish!", "Come on!", "I'll cry... 🎂", "Fine, ignore the cake!", "Okay, click Yes now!"];
+
+    const moveNoButton = () => {
+        noBtn.classList.add('shake');
+        setTimeout(() => noBtn.classList.remove('shake'), 300);
+
+        const padding = 20;
+        const maxX = window.innerWidth - noBtn.offsetWidth - padding;
+        const maxY = window.innerHeight - noBtn.offsetHeight - padding;
+
+        const x = Math.max(padding, Math.random() * maxX);
+        const y = Math.max(padding, Math.random() * maxY);
+        
+        noBtn.style.position = 'fixed';
+        noBtn.style.left = x + 'px';
+        noBtn.style.top = y + 'px';
+        noBtn.style.zIndex = '100';
+        if (noCount < noMessages.length - 1) {
+            noCount++;
+            noBtn.innerText = noMessages[noCount];
+        }
+        const yesBtn = document.getElementById('yes-btn');
+        const currentSize = parseFloat(window.getComputedStyle(yesBtn).fontSize);
+        if (currentSize < 40) {
+            yesBtn.style.fontSize = (currentSize + 2) + 'px';
+            yesBtn.style.padding = (parseFloat(window.getComputedStyle(yesBtn).paddingTop) + 2) + 'px ' + (parseFloat(window.getComputedStyle(yesBtn).paddingLeft) + 4) + 'px';
+        }
+    };
+
+    noBtn.addEventListener('mouseover', () => { if (window.innerWidth > 768) moveNoButton(); });
+    noBtn.addEventListener('click', moveNoButton);
+
+    // YES BUTTON LOGIC + EMAIL TRIGGER
+    document.getElementById('yes-btn').addEventListener('click', () => {
+        const mainCard = document.getElementById('main-card');
+        const successCard = document.getElementById('success-card');
+        
+        const templateParams = {
+            from_name: from,
+            to_name: to,
+            message: `${to} made their birthday wish! 🎉`
+        };
+
+        emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams)
+            .then(() => console.log('Email sent successfully!'))
+            .catch((error) => console.error('Email failed:', error));
+
+        mainCard.classList.add('opacity-0', 'scale-90');
+        setTimeout(() => {
+            mainCard.classList.add('hidden');
+            successCard.classList.remove('hidden');
+            setTimeout(() => {
+                successCard.classList.remove('opacity-0', 'translate-y-10');
+                triggerConfetti();
+            }, 50);
+        }, 500);
+    });
+
+    function triggerConfetti() {
+        for(let i=0; i<100; i++) {
+            setTimeout(() => {
+                const c = document.createElement('div');
+                c.innerText = ['🎈', '✨', '🎊', '⭐', '🎉', '🍰'][Math.floor(Math.random() * 6)];
+                c.className = 'fixed text-2xl animate-pulse pointer-events-none';
+                c.style.left = Math.random() * 100 + 'vw';
+                c.style.top = Math.random() * 100 + 'vh';
+                c.style.zIndex = '1000';
+                document.body.appendChild(c);
+                const anim = c.animate([
+                    { transform: 'scale(0) rotate(0deg)', opacity: 1 },
+                    { transform: 'scale(2) rotate(360deg)', opacity: 0 }
+                ], { duration: 1000 + Math.random() * 1000 });
+                anim.onfinish = () => c.remove();
+            }, i * 30);
+        }
+    }
+</script>
+</body>
+</html>
