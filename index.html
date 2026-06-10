@@ -1,307 +1,691 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Happy Birthday! 🎂</title>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@400;600;700&display=swap');
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Happy Birthday! 🎂</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;1,9..144,400&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --rose: #e11d48;
+    --rose-light: #ffe4e6;
+    --gold: #f59e0b;
+    --gold-light: #fef3c7;
+    --plum: #7c3aed;
+    --plum-light: #ede9fe;
+    --mint: #059669;
+    --bg: #fff9f0;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow-x: hidden;
+  }
+  h1,h2,.serif { font-family: 'Fraunces', serif; }
 
-        :root {
-            --gold-main: #f59e0b;
-            --gold-light: #fcd34d;
-        }
+  /* PARTICLES */
+  #particles { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+  .particle {
+    position: absolute; bottom: -40px; border-radius: 50%;
+    animation: rise linear forwards;
+  }
+  @keyframes rise {
+    0% { transform: translateY(0) rotate(0deg) scale(0.5); opacity: 0.7; }
+    100% { transform: translateY(-110vh) rotate(720deg) scale(1.2); opacity: 0; }
+  }
 
-        body {
-            font-family: 'Quicksand', sans-serif;
-            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 50%, #fce7f3 100%);
-            height: 100vh;
-            height: 100dvh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            margin: 0;
-            touch-action: manipulation;
-        }
+  /* WRAPPER */
+  #app {
+    position: relative; z-index: 10;
+    width: 100%; max-width: 480px;
+    margin: 0 auto; padding: 1.5rem 1rem;
+    min-height: 100vh;
+    display: flex; flex-direction: column; justify-content: center;
+  }
 
-        .glass-card {
-            background: rgba(255, 255, 255, 0.75);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border-radius: 2rem;
-            border: 2px solid rgba(255, 255, 255, 0.6);
-            padding: 2rem;
-            text-align: center;
-            width: 90%;
-            max-width: 420px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
-            position: relative;
-            z-index: 10;
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-        }
+  /* CARDS */
+  .card {
+    background: #fff;
+    border-radius: 28px;
+    border: 1.5px solid rgba(0,0,0,0.07);
+    padding: 2rem 1.75rem;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.07);
+    transition: opacity 0.4s, transform 0.4s;
+  }
+  .card.hidden { display: none; }
+  .card.fade-out { opacity: 0; transform: translateY(-16px) scale(0.97); }
+  .card.fade-in { animation: cardIn 0.45s cubic-bezier(.22,1,.36,1) forwards; }
+  @keyframes cardIn {
+    from { opacity: 0; transform: translateY(24px) scale(0.97); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+  }
 
-        .script-font {
-            font-family: 'Dancing Script', cursive;
-        }
+  /* STEP DOTS */
+  .step-dots { display: flex; gap: 8px; justify-content: center; margin-bottom: 1.5rem; }
+  .dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: #e5e7eb; transition: all 0.3s;
+  }
+  .dot.active { background: var(--rose); transform: scale(1.3); }
+  .dot.done { background: var(--mint); }
 
-        .floating-item {
-            position: absolute;
-            pointer-events: none;
-            z-index: 1;
-            animation: moveUp 4s linear forwards;
-        }
+  /* PROGRESS BAR */
+  .progress-track {
+    height: 4px; background: #f3f4f6; border-radius: 99px;
+    margin-bottom: 1.75rem; overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%; border-radius: 99px;
+    background: linear-gradient(90deg, var(--rose), var(--gold));
+    transition: width 0.6s cubic-bezier(.22,1,.36,1);
+  }
 
-        @keyframes moveUp {
-            0% { transform: translateY(110vh) scale(0) rotate(0deg); opacity: 0; }
-            20% { opacity: 0.85; }
-            100% { transform: translateY(-20vh) scale(1.5) rotate(360deg); opacity: 0; }
-        }
+  /* INPUTS */
+  input[type=text], input[type=email], textarea, select {
+    width: 100%; padding: 0.75rem 1rem;
+    border: 1.5px solid #e5e7eb; border-radius: 14px;
+    font-family: 'DM Sans', sans-serif; font-size: 15px;
+    background: #fafaf9; color: #111;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    outline: none; resize: none;
+  }
+  input[type=text]:focus, input[type=email]:focus, textarea:focus, select:focus {
+    border-color: var(--rose); box-shadow: 0 0 0 3px rgba(225,29,72,0.12);
+  }
+  textarea { min-height: 90px; }
+  label { display: block; font-size: 13px; font-weight: 600; color: #6b7280; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.05em; }
 
-        .shake {
-            animation: shake 0.3s ease-in-out;
-        }
+  /* BUTTONS */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    padding: 0.8rem 1.6rem; border-radius: 14px; font-size: 15px; font-weight: 600;
+    cursor: pointer; border: none; transition: all 0.18s;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .btn:active { transform: scale(0.97); }
+  .btn-primary {
+    background: var(--rose); color: #fff;
+    box-shadow: 0 4px 14px rgba(225,29,72,0.25);
+  }
+  .btn-primary:hover { background: #c81140; }
+  .btn-ghost {
+    background: transparent; color: #9ca3af;
+    border: 1.5px solid #e5e7eb;
+  }
+  .btn-ghost:hover { background: #f9fafb; color: #374151; }
+  .btn-full { width: 100%; }
+  .btn-gold {
+    background: var(--gold); color: #fff;
+    box-shadow: 0 4px 14px rgba(245,158,11,0.3);
+  }
+  .btn-gold:hover { background: #d97706; }
 
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-5px); }
-            75% { transform: translateX(5px); }
-        }
+  /* EMOJI PICKER */
+  .emoji-grid {
+    display: grid; grid-template-columns: repeat(6,1fr); gap: 8px; margin-top: 8px;
+  }
+  .emoji-btn {
+    font-size: 22px; background: #f9fafb; border: 1.5px solid #e5e7eb;
+    border-radius: 10px; padding: 6px 0; cursor: pointer;
+    transition: all 0.15s; text-align: center;
+  }
+  .emoji-btn:hover, .emoji-btn.selected { background: var(--rose-light); border-color: var(--rose); transform: scale(1.1); }
 
-        .btn-container {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            align-items: center;
-            margin-top: 2rem;
-            min-height: 80px;
-        }
+  /* THEME PICKER */
+  .theme-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 8px; }
+  .theme-btn {
+    padding: 0.7rem 1rem; border-radius: 12px; font-size: 13px; font-weight: 600;
+    cursor: pointer; border: 1.5px solid #e5e7eb; text-align: center;
+    transition: all 0.15s; background: #fafaf9;
+  }
+  .theme-btn:hover, .theme-btn.selected { border-color: var(--rose); transform: scale(1.02); }
+  .theme-btn.selected { background: var(--rose-light); }
 
-        #no-btn {
-            transition: all 0.15s ease-out;
-            white-space: nowrap;
-        }
+  /* DELIVERY TOGGLE */
+  .toggle-row { display: flex; gap: 10px; }
+  .toggle-opt {
+    flex: 1; padding: 0.65rem; border-radius: 12px; border: 1.5px solid #e5e7eb;
+    text-align: center; cursor: pointer; font-size: 14px; font-weight: 600;
+    transition: all 0.15s; background: #fafaf9;
+  }
+  .toggle-opt.selected { background: var(--plum-light); border-color: var(--plum); color: var(--plum); }
 
-        .pulse-cake {
-            font-size: 4rem;
-            animation: pulse 1.5s infinite;
-        }
+  /* WISH PREVIEW */
+  .wish-preview {
+    border-radius: 20px; padding: 1.5rem;
+    border: 1.5px dashed #fcd34d;
+    text-align: center; margin: 1rem 0;
+    position: relative; overflow: hidden;
+  }
+  .wish-preview::before {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(255,228,230,0.5), rgba(254,243,199,0.5));
+    z-index: 0;
+  }
+  .wish-preview > * { position: relative; z-index: 1; }
 
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.2); }
-            100% { transform: scale(1); }
-        }
+  /* CANDLE ANIMATION */
+  .candle-row { display: flex; gap: 6px; justify-content: center; margin-bottom: 4px; }
+  @keyframes flicker {
+    0%,100% { transform: scaleY(1) rotate(-3deg); }
+    50% { transform: scaleY(1.25) rotate(3deg); }
+  }
+  .flame {
+    display: inline-block; font-size: 18px;
+    animation: flicker 0.7s ease-in-out infinite;
+    animation-delay: calc(var(--d)*0.18s);
+  }
 
-        .candles {
-            display: inline-flex;
-            gap: 4px;
-            margin-bottom: 0.5rem;
-        }
+  /* CONFETTI BURST */
+  .confetti-piece {
+    position: fixed; width: 8px; height: 8px; border-radius: 2px;
+    pointer-events: none; z-index: 1000;
+    animation: confFall linear forwards;
+  }
+  @keyframes confFall {
+    0% { transform: translateY(0) rotate(0deg) scale(1); opacity: 1; }
+    100% { transform: translateY(90vh) rotate(720deg) scale(0.5); opacity: 0; }
+  }
 
-        @keyframes flicker {
-            0%, 100% { transform: scaleY(1) rotate(-2deg); }
-            50% { transform: scaleY(1.2) rotate(2deg); }
-        }
+  /* NO BTN PLAYFUL */
+  #no-btn {
+    transition: font-size 0.2s, padding 0.2s;
+    position: relative;
+  }
 
-        .candle-flame {
-            display: inline-block;
-            animation: flicker 0.6s ease-in-out infinite;
-            animation-delay: calc(var(--i) * 0.15s);
-        }
-    </style>
+  /* SUCCESS CARD */
+  .star-ring { font-size: 3rem; animation: spinBounce 1s ease-out; }
+  @keyframes spinBounce {
+    0% { transform: scale(0) rotate(-180deg); }
+    70% { transform: scale(1.2) rotate(10deg); }
+    100% { transform: scale(1) rotate(0deg); }
+  }
+
+  /* MOBILE */
+  @media (max-width: 480px) {
+    .card { padding: 1.5rem 1.25rem; }
+    .emoji-grid { grid-template-columns: repeat(5,1fr); }
+  }
+
+  /* CHAR COUNTER */
+  .char-count { text-align: right; font-size: 12px; color: #9ca3af; margin-top: 4px; }
+  .char-count.warn { color: var(--rose); }
+</style>
 </head>
 <body>
 
-    <div id="bg-floats" class="fixed inset-0 pointer-events-none"></div>
+<div id="particles"></div>
 
-    <!-- Loader Card -->
-    <div id="loader-card" class="glass-card">
-        <div class="pulse-cake">🎂</div>
-        <h2 class="text-xl font-bold text-amber-600 mt-4">Baking the cake...</h2>
-        <div class="w-full bg-amber-100 h-2 rounded-full mt-6 overflow-hidden">
-            <div id="fill" class="h-full bg-amber-400 w-0 transition-all duration-1000"></div>
-        </div>
-        <p id="status-text" class="text-amber-400 text-xs mt-3 uppercase tracking-widest">Lighting the candles</p>
+<div id="app">
+
+  <!-- STEP DOTS & PROGRESS (shared) -->
+  <div id="progress-wrap" style="margin-bottom: 0;">
+    <div class="step-dots" id="step-dots">
+      <div class="dot" id="d0"></div>
+      <div class="dot" id="d1"></div>
+      <div class="dot" id="d2"></div>
+      <div class="dot" id="d3"></div>
+      <div class="dot" id="d4"></div>
+      <div class="dot" id="d5"></div>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="prog-fill" style="width:0%"></div></div>
+  </div>
+
+  <!-- ── STEP 0: LOADER ── -->
+  <div class="card" id="s0">
+    <div style="text-align:center; padding: 1rem 0;">
+      <div style="font-size:4rem; animation: spinBounce 0.8s ease-out forwards;">🎂</div>
+      <h2 class="serif" style="color:#e11d48; margin:1rem 0 0.5rem; font-size:1.4rem; font-weight:600;">Getting things ready…</h2>
+      <div class="progress-track" style="margin-top:1.5rem;">
+        <div class="progress-fill" id="loader-fill" style="width:0%; transition: width 2.5s ease-in-out;"></div>
+      </div>
+      <p style="font-size:12px; color:#9ca3af; margin-top:0.5rem; text-transform:uppercase; letter-spacing:0.08em;" id="loader-text">Lighting the candles…</p>
+    </div>
+  </div>
+
+  <!-- ── STEP 1: WHO IS IT FOR ── -->
+  <div class="card hidden" id="s1">
+    <div style="font-size:2.5rem; text-align:center; margin-bottom:1rem;">🎁</div>
+    <h2 class="serif" style="font-size:1.5rem; font-weight:600; color:#111; text-align:center; margin:0 0 0.4rem;">Who's celebrating?</h2>
+    <p style="font-size:14px; color:#9ca3af; text-align:center; margin:0 0 1.5rem;">Let's personalise this birthday experience.</p>
+    <div style="display:flex; flex-direction:column; gap:1rem;">
+      <div>
+        <label>Their name 🎂</label>
+        <input type="text" id="to-name" placeholder="e.g. Aisha, Rayan, Sarah…" maxlength="30">
+      </div>
+      <div>
+        <label>Your name</label>
+        <input type="text" id="from-name" placeholder="Your name (or nickname)" maxlength="30">
+      </div>
+      <div>
+        <label>Their relationship to you</label>
+        <select id="relation">
+          <option value="">— pick one —</option>
+          <option value="best friend">Best friend</option>
+          <option value="sibling">Sibling</option>
+          <option value="partner">Partner</option>
+          <option value="parent">Parent</option>
+          <option value="colleague">Colleague</option>
+          <option value="child">Child</option>
+          <option value="cousin">Cousin</option>
+          <option value="other">Someone special</option>
+        </select>
+      </div>
+    </div>
+    <div style="display:flex; gap:10px; margin-top:1.75rem;">
+      <button class="btn btn-primary btn-full" onclick="goTo(2)">Next →</button>
+    </div>
+  </div>
+
+  <!-- ── STEP 2: PICK A THEME ── -->
+  <div class="card hidden" id="s2">
+    <div style="font-size:2.5rem; text-align:center; margin-bottom:1rem;">🎨</div>
+    <h2 class="serif" style="font-size:1.5rem; font-weight:600; color:#111; text-align:center; margin:0 0 0.4rem;">Pick a vibe</h2>
+    <p style="font-size:14px; color:#9ca3af; text-align:center; margin:0 0 1rem;">What mood is this celebration?</p>
+    <div class="theme-grid">
+      <div class="theme-btn" data-theme="romantic" onclick="pickTheme(this)" style="background: linear-gradient(135deg,#fff0f3,#ffe4e6);">💕 Romantic</div>
+      <div class="theme-btn" data-theme="fun" onclick="pickTheme(this)" style="background: linear-gradient(135deg,#fef9c3,#fef3c7);">🎉 Super Fun</div>
+      <div class="theme-btn" data-theme="heartfelt" onclick="pickTheme(this)" style="background: linear-gradient(135deg,#ede9fe,#ddd6fe);">💜 Heartfelt</div>
+      <div class="theme-btn" data-theme="funny" onclick="pickTheme(this)" style="background: linear-gradient(135deg,#dcfce7,#bbf7d0);">😂 Funny</div>
+      <div class="theme-btn" data-theme="poetic" onclick="pickTheme(this)" style="background: linear-gradient(135deg,#e0f2fe,#bae6fd);">🌙 Poetic</div>
+      <div class="theme-btn" data-theme="adventurous" onclick="pickTheme(this)" style="background: linear-gradient(135deg,#fff7ed,#fed7aa);">🔥 Bold & Brave</div>
+    </div>
+    <div style="display:flex; gap:10px; margin-top:1.75rem;">
+      <button class="btn btn-ghost" onclick="goTo(1)">← Back</button>
+      <button class="btn btn-primary btn-full" onclick="goTo(3)">Next →</button>
+    </div>
+  </div>
+
+  <!-- ── STEP 3: CRAFT YOUR WISH ── -->
+  <div class="card hidden" id="s3">
+    <div style="font-size:2.5rem; text-align:center; margin-bottom:1rem;">✍️</div>
+    <h2 class="serif" style="font-size:1.5rem; font-weight:600; color:#111; text-align:center; margin:0 0 0.4rem;">Write your wish</h2>
+    <p style="font-size:14px; color:#9ca3af; text-align:center; margin:0 0 1rem;">Speak from the heart — this is the part they'll remember.</p>
+
+    <div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:1rem;" id="starter-chips"></div>
+
+    <div>
+      <label>Your message <span id="word-theme-tag" style="font-style:italic; font-weight:400; color:#f59e0b;"></span></label>
+      <textarea id="wish-text" maxlength="280" placeholder="Type your wish here…"></textarea>
+      <div class="char-count" id="char-count">0 / 280</div>
     </div>
 
-    <!-- Main Card -->
-    <div id="main-card" class="glass-card hidden opacity-0 translate-y-10">
-        <div class="candles">
-            <span class="candle-flame" style="--i:0">🕯️</span>
-            <span class="candle-flame" style="--i:1">🕯️</span>
-            <span class="candle-flame" style="--i:2">🕯️</span>
-        </div>
-        <div class="text-5xl mb-2">🎂</div>
-        <h1 class="text-3xl font-bold text-gray-800 mb-1">Happy Birthday, <span id="to-name" class="script-font text-amber-500 text-4xl">Star</span>!</h1>
-        <p class="text-gray-600 text-sm md:text-base leading-relaxed mb-6">
-            Today is all about you — your laugh, your light, and every little thing that makes you so wonderfully you. I'm so grateful you were born. Wishing you a day as magical as you are. 🌟
-        </p>
-        <h2 class="text-xl font-bold text-gray-800 mb-8">Ready to make a wish and blow out the candles?</h2>
+    <div style="margin-top:1rem;">
+      <label>Pick a signature emoji 🌟</label>
+      <div class="emoji-grid" id="emoji-grid"></div>
+    </div>
+    <div style="display:flex; gap:10px; margin-top:1.75rem;">
+      <button class="btn btn-ghost" onclick="goTo(2)">← Back</button>
+      <button class="btn btn-primary btn-full" onclick="goTo(4)">Preview →</button>
+    </div>
+  </div>
 
-        <div class="btn-container flex-col sm:flex-row">
-            <button id="yes-btn" class="bg-amber-400 hover:bg-amber-500 text-white px-8 py-3 rounded-2xl font-bold text-lg shadow-lg transform transition active:scale-90 w-full">
-                Make a Wish! 🎉
-            </button>
-            <button id="no-btn" class="bg-white border-2 border-amber-200 text-amber-400 px-8 py-3 rounded-2xl font-bold text-lg w-full">
-                Not yet
-            </button>
-        </div>
-        
-        <p class="mt-8 text-xs text-gray-400 italic">With love & cake, <span id="from-name">Someone special</span></p>
+  <!-- ── STEP 4: PREVIEW ── -->
+  <div class="card hidden" id="s4">
+    <div style="font-size:2.5rem; text-align:center; margin-bottom:0.5rem;">👀</div>
+    <h2 class="serif" style="font-size:1.5rem; font-weight:600; color:#111; text-align:center; margin:0 0 1rem;">Preview your card</h2>
+
+    <div class="wish-preview" id="preview-card">
+      <div class="candle-row">
+        <span class="flame" style="--d:0">🕯️</span>
+        <span class="flame" style="--d:1">🕯️</span>
+        <span class="flame" style="--d:2">🕯️</span>
+      </div>
+      <div style="font-size:3rem; margin: 6px 0;">🎂</div>
+      <h3 class="serif" style="font-size:1.6rem; font-weight:600; color:#e11d48; margin: 0 0 0.5rem;" id="preview-title">Happy Birthday!</h3>
+      <p style="font-size:14px; color:#374151; line-height:1.7; margin:0 0 1rem;" id="preview-msg"></p>
+      <div id="preview-emoji" style="font-size:1.5rem; margin-bottom:0.5rem;"></div>
+      <p style="font-size:12px; color:#9ca3af; margin:0;">— <span id="preview-from"></span></p>
     </div>
 
-    <!-- Celebration Card -->
-    <div id="success-card" class="glass-card hidden opacity-0 translate-y-10">
-        <div class="text-6xl mb-4">🥳</div>
-        <h1 class="text-4xl font-bold text-amber-500 script-font mb-4">Wish Made!</h1>
-        <p class="text-gray-700 mb-6">
-            The universe heard you! May every dream you blew into that flame come true this year. Happy Birthday! 🎊
-        </p>
-        <div class="bg-amber-50 p-4 rounded-xl mb-6">
-            <p class="text-amber-600 font-semibold italic">"May your day be as golden as you are."</p>
-        </div>
-        <button onclick="location.reload()" class="text-amber-400 text-xs font-bold uppercase tracking-widest hover:text-amber-600">Celebrate Again</button>
+    <div style="display:flex; flex-direction:column; gap:1rem; margin-top:0.5rem;">
+      <label style="margin-bottom:0;">Send as…</label>
+      <div class="toggle-row" id="delivery-toggle">
+        <div class="toggle-opt selected" data-mode="link" onclick="pickDelivery(this)">🔗 Share link</div>
+        <div class="toggle-opt" data-mode="copy" onclick="pickDelivery(this)">📋 Copy text</div>
+        <div class="toggle-opt" data-mode="whatsapp" onclick="pickDelivery(this)">💬 WhatsApp</div>
+      </div>
     </div>
 
-    <script>
-    // ==========================================
-    // CONFIGURATION
-    // ==========================================
-    const EMAILJS_PUBLIC_KEY = "YOUR_PUBLIC_KEY";
-    const EMAILJS_SERVICE_ID = "YOUR_SERVICE_ID";
-    const EMAILJS_TEMPLATE_ID = "YOUR_TEMPLATE_ID";
-    // ==========================================
+    <div style="display:flex; gap:10px; margin-top:1.75rem;">
+      <button class="btn btn-ghost" onclick="goTo(3)">← Edit</button>
+      <button class="btn btn-gold btn-full" onclick="sendWish()">Send it! 🎉</button>
+    </div>
+  </div>
 
-    (function() {
-        emailjs.init(EMAILJS_PUBLIC_KEY);
-    })();
+  <!-- ── STEP 5: BLOW CANDLES ── -->
+  <div class="card hidden" id="s5">
+    <div style="text-align:center;">
+      <div class="candle-row" style="font-size:28px; gap:10px; margin-bottom:4px;" id="big-candles">
+        <span class="flame" style="--d:0">🕯️</span>
+        <span class="flame" style="--d:1">🕯️</span>
+        <span class="flame" style="--d:2">🕯️</span>
+      </div>
+      <div style="font-size:5rem; margin: 4px 0; filter: drop-shadow(0 4px 10px rgba(245,158,11,0.4));">🎂</div>
+      <h2 class="serif" style="font-size:1.6rem; font-weight:600; color:#111; margin: 0.5rem 0 0.4rem;" id="blow-title">Ready, <span id="blow-name"></span>?</h2>
+      <p style="font-size:14px; color:#6b7280; margin: 0 0 1.5rem;" id="wish-text-display"></p>
+      <p style="font-size:13px; color:#9ca3af; margin-bottom:1.5rem;">Make a secret wish in your heart…</p>
 
-    const params = new URLSearchParams(window.location.search);
-    const to = params.get('to') || 'Star';
-    const from = params.get('from') || 'Someone Special';
+      <div style="display:flex; flex-direction:column; gap:10px; align-items:center;">
+        <button id="yes-btn" class="btn btn-primary btn-full" onclick="makeWish()" style="font-size:1.05rem; padding:1rem 2rem;">
+          🌬️ Blow out the candles!
+        </button>
+        <button id="no-btn" class="btn btn-ghost" onclick="nudgeNoBtn()" style="font-size:14px;">Not yet…</button>
+      </div>
+    </div>
+  </div>
 
-    document.getElementById('to-name').innerText = to;
-    document.getElementById('from-name').innerText = from;
+  <!-- ── STEP 6: CELEBRATION ── -->
+  <div class="card hidden" id="s6">
+    <div style="text-align:center; padding: 0.5rem 0;">
+      <div class="star-ring">🥳</div>
+      <h1 class="serif" style="font-size:2.2rem; font-weight:600; color:#e11d48; margin:0.75rem 0 0.4rem;">Wish made!</h1>
+      <p style="font-size:14px; color:#6b7280; margin:0 0 1.5rem; line-height:1.7;">
+        The universe just heard you — and so did <strong id="cel-name"></strong>. May every dream you sealed in that flame become real this year.
+      </p>
+      <div style="background:var(--gold-light); border-radius:16px; padding:1.25rem; margin-bottom:1.5rem; border:1.5px dashed #fcd34d;">
+        <p class="serif" style="font-style:italic; color:#92400e; font-size:1.05rem; margin:0;" id="cel-quote"></p>
+      </div>
+      <div id="cel-emojis" style="font-size:2rem; letter-spacing:4px; margin-bottom:1.5rem;"></div>
+      <div style="display:flex; gap:10px;">
+        <button class="btn btn-ghost btn-full" onclick="location.reload()">🔄 Make another</button>
+        <button class="btn btn-primary btn-full" onclick="celebrateAgain()">🎊 Celebrate again!</button>
+      </div>
+    </div>
+  </div>
 
-    window.addEventListener('load', () => {
-        const fill = document.getElementById('fill');
-        const status = document.getElementById('status-text');
-        
-        setTimeout(() => {
-            fill.style.width = '100%';
-            setTimeout(() => { status.innerText = "Candles lit: Ready! 🕯️"; }, 1000);
-        }, 500);
+</div><!-- /app -->
 
-        setTimeout(() => {
-            const loaderCard = document.getElementById('loader-card');
-            const mainCard = document.getElementById('main-card');
-            
-            loaderCard.classList.add('opacity-0', 'scale-90');
-            setTimeout(() => {
-                loaderCard.classList.add('hidden');
-                mainCard.classList.remove('hidden');
-                setTimeout(() => {
-                    mainCard.classList.remove('opacity-0', 'translate-y-10');
-                }, 50);
-            }, 500);
-        }, 3500);
+<script>
+// ── STATE ──
+const state = {
+  to: '', from: '', relation: '',
+  theme: '', wish: '', emoji: '🌟',
+  delivery: 'link', currentStep: 0
+};
+
+const TOTAL_STEPS = 6;
+const EMOJIS = ['🌟','💖','🎉','✨','🎂','🥂','🌺','🎈','💫','🦋','🌈','🔥'];
+
+const STARTERS = {
+  romantic: ["You mean the world to me", "Every day with you is a gift", "My heart is fuller because of you"],
+  fun: ["Party time! 🥳", "You're officially another year awesome", "Today's forecast: 100% cake and happiness"],
+  heartfelt: ["Watching you grow has been my greatest joy", "You make every room brighter", "I'm so proud of who you've become"],
+  funny: ["Congratulations on surviving another trip around the sun", "Age is just a number, but yours is getting big", "You're not old, you're vintage"],
+  poetic: ["May the stars carry your wishes skyward", "Another chapter begins today, write it beautifully", "You are made of stardust and wonder"],
+  adventurous: ["The best is yet to come — go claim it", "This year, dream bigger and dare harder", "Here's to the bold choices ahead of you"]
+};
+
+const QUOTES = {
+  romantic: "\"Where there is love, there is life.\"",
+  fun: "\"Life is short — eat the cake first.\"",
+  heartfelt: "\"The most precious gift we can offer anyone is our attention.\"",
+  funny: "\"Age is an issue of mind over matter. If you don't mind, it doesn't matter.\"",
+  poetic: "\"We are all made of stardust.\"",
+  adventurous: "\"The biggest adventure you can take is to live the life of your dreams.\""
+};
+
+// ── PARTICLES ──
+function spawnParticle() {
+  const p = document.createElement('div');
+  p.className = 'particle';
+  const size = Math.random()*14+6;
+  const colors = ['#fcd34d','#fca5a5','#a5b4fc','#6ee7b7','#f9a8d4','#fde68a'];
+  p.style.cssText = `left:${Math.random()*100}vw; width:${size}px; height:${size}px; background:${colors[Math.floor(Math.random()*colors.length)]}; animation-duration:${Math.random()*4+4}s; opacity:0.5;`;
+  document.getElementById('particles').appendChild(p);
+  setTimeout(()=>p.remove(), 8000);
+}
+setInterval(spawnParticle, 350);
+
+// ── LOADER ──
+window.addEventListener('load', ()=>{
+  updateProgress(-1);
+  const fill = document.getElementById('loader-fill');
+  const txt = document.getElementById('loader-text');
+  setTimeout(()=>{ fill.style.width='100%'; },100);
+  setTimeout(()=>{ txt.textContent='Candles lit! ✨ Let\'s go'; },1600);
+  setTimeout(()=>{ transition(0,1); },3200);
+});
+
+// ── NAVIGATION ──
+function goTo(step) {
+  if(!validateStep(state.currentStep)) return;
+  collectStep(state.currentStep);
+  transition(state.currentStep, step);
+}
+
+function transition(from, to) {
+  const fromEl = document.getElementById('s'+from);
+  const toEl   = document.getElementById('s'+to);
+  fromEl.classList.add('fade-out');
+  setTimeout(()=>{
+    fromEl.classList.add('hidden');
+    fromEl.classList.remove('fade-out');
+    toEl.classList.remove('hidden');
+    toEl.classList.add('fade-in');
+    setTimeout(()=>toEl.classList.remove('fade-in'), 500);
+    state.currentStep = to;
+    updateProgress(to);
+    if(to === 3) buildStep3();
+    if(to === 4) buildPreview();
+    if(to === 5) buildBlowStep();
+  }, 350);
+}
+
+function updateProgress(step) {
+  const pct = step <= 0 ? 0 : Math.round((step / TOTAL_STEPS)*100);
+  document.getElementById('prog-fill').style.width = pct+'%';
+  for(let i=0;i<TOTAL_STEPS;i++){
+    const d = document.getElementById('d'+i);
+    if(!d) continue;
+    d.className = 'dot' + (i < step ? ' done' : i===step ? ' active' : '');
+  }
+}
+
+function validateStep(step) {
+  if(step===1){
+    const to = document.getElementById('to-name').value.trim();
+    const rel = document.getElementById('relation').value;
+    if(!to){ shake('to-name'); return false; }
+    if(!rel){ shake('relation'); return false; }
+  }
+  if(step===2 && !state.theme){ alert('Pick a vibe first! 🎨'); return false; }
+  if(step===3){
+    const w = document.getElementById('wish-text').value.trim();
+    if(w.length < 5){ shake('wish-text'); return false; }
+  }
+  return true;
+}
+
+function collectStep(step) {
+  if(step===1){
+    state.to = document.getElementById('to-name').value.trim() || 'Star';
+    state.from = document.getElementById('from-name').value.trim() || 'Someone special';
+    state.relation = document.getElementById('relation').value;
+  }
+  if(step===3){
+    state.wish = document.getElementById('wish-text').value.trim();
+  }
+}
+
+function shake(id) {
+  const el = document.getElementById(id);
+  el.style.borderColor='var(--rose)';
+  el.animate([{transform:'translateX(-6px)'},{transform:'translateX(6px)'},{transform:'translateX(-4px)'},{transform:'translateX(0)'}], {duration:250});
+  setTimeout(()=>el.style.borderColor='', 800);
+}
+
+// ── STEP 2: THEME ──
+function pickTheme(el) {
+  document.querySelectorAll('.theme-btn').forEach(b=>b.classList.remove('selected'));
+  el.classList.add('selected');
+  state.theme = el.dataset.theme;
+}
+
+// ── STEP 3: WISH ──
+function buildStep3() {
+  // starters
+  const chips = document.getElementById('starter-chips');
+  chips.innerHTML = '';
+  (STARTERS[state.theme]||[]).forEach(s=>{
+    const btn = document.createElement('button');
+    btn.className='btn btn-ghost';
+    btn.style.cssText='font-size:12px; padding:5px 12px; border-radius:99px;';
+    btn.textContent = '+ '+s;
+    btn.onclick = ()=>{ document.getElementById('wish-text').value=s; updateCharCount(); };
+    chips.appendChild(btn);
+  });
+  // theme tag
+  const themeLabels = {romantic:'💕 romantic',fun:'🎉 fun',heartfelt:'💜 heartfelt',funny:'😂 funny',poetic:'🌙 poetic',adventurous:'🔥 adventurous'};
+  document.getElementById('word-theme-tag').textContent = '– '+themeLabels[state.theme]||'';
+  // emoji grid
+  const eg = document.getElementById('emoji-grid');
+  eg.innerHTML='';
+  EMOJIS.forEach(e=>{
+    const b=document.createElement('div');
+    b.className='emoji-btn'+(state.emoji===e?' selected':'');
+    b.textContent=e;
+    b.onclick=()=>{ state.emoji=e; eg.querySelectorAll('.emoji-btn').forEach(x=>x.classList.remove('selected')); b.classList.add('selected'); };
+    eg.appendChild(b);
+  });
+  // char counter
+  const ta=document.getElementById('wish-text');
+  ta.value=state.wish||'';
+  updateCharCount();
+  ta.addEventListener('input', updateCharCount);
+}
+
+function updateCharCount() {
+  const v=document.getElementById('wish-text').value.length;
+  const el=document.getElementById('char-count');
+  el.textContent=v+' / 280';
+  el.className='char-count'+(v>240?' warn':'');
+}
+
+// ── STEP 4: PREVIEW ──
+function buildPreview() {
+  collectStep(3);
+  document.getElementById('preview-title').textContent = 'Happy Birthday, '+state.to+'!';
+  document.getElementById('preview-msg').textContent  = state.wish;
+  document.getElementById('preview-emoji').textContent= state.emoji+' '+state.emoji+' '+state.emoji;
+  document.getElementById('preview-from').textContent = 'With love, '+state.from;
+}
+
+function pickDelivery(el) {
+  document.querySelectorAll('.toggle-opt').forEach(o=>o.classList.remove('selected'));
+  el.classList.add('selected');
+  state.delivery = el.dataset.mode;
+}
+
+function sendWish() {
+  const msg = `🎂 Happy Birthday, ${state.to}!\n\n${state.wish}\n\n${state.emoji} — ${state.from}`;
+  if(state.delivery==='copy'){
+    navigator.clipboard.writeText(msg).then(()=>{
+      const btn = document.querySelector('#s4 .btn-gold');
+      btn.textContent='✅ Copied!';
+      setTimeout(()=>btn.textContent='Send it! 🎉',2000);
     });
-
-    // Floating birthday items
-    function createFloat() {
-        const el = document.createElement('div');
-        el.innerHTML = ['🎈', '🎉', '✨', '🎊', '⭐', '🌟', '🍰'][Math.floor(Math.random() * 7)];
-        el.className = 'floating-item';
-        el.style.left = Math.random() * 100 + 'vw';
-        el.style.animationDuration = (Math.random() * 2 + 3) + 's';
-        el.style.fontSize = (Math.random() * 15 + 15) + 'px';
-        document.getElementById('bg-floats').appendChild(el);
-        setTimeout(() => el.remove(), 4000);
-    }
-    setInterval(createFloat, 300);
-
-    // Playful No Button Logic
-    const noBtn = document.getElementById('no-btn');
-    let noCount = 0;
-    const noMessages = ["Not yet", "Are you sure?", "Really? 🥺", "The cake is waiting!", "Just one wish!", "Come on!", "I'll cry... 🎂", "Fine, ignore the cake!", "Okay, click Yes now!"];
-
-    const moveNoButton = () => {
-        noBtn.classList.add('shake');
-        setTimeout(() => noBtn.classList.remove('shake'), 300);
-
-        const padding = 20;
-        const maxX = window.innerWidth - noBtn.offsetWidth - padding;
-        const maxY = window.innerHeight - noBtn.offsetHeight - padding;
-
-        const x = Math.max(padding, Math.random() * maxX);
-        const y = Math.max(padding, Math.random() * maxY);
-        
-        noBtn.style.position = 'fixed';
-        noBtn.style.left = x + 'px';
-        noBtn.style.top = y + 'px';
-        noBtn.style.zIndex = '100';
-        if (noCount < noMessages.length - 1) {
-            noCount++;
-            noBtn.innerText = noMessages[noCount];
-        }
-        const yesBtn = document.getElementById('yes-btn');
-        const currentSize = parseFloat(window.getComputedStyle(yesBtn).fontSize);
-        if (currentSize < 40) {
-            yesBtn.style.fontSize = (currentSize + 2) + 'px';
-            yesBtn.style.padding = (parseFloat(window.getComputedStyle(yesBtn).paddingTop) + 2) + 'px ' + (parseFloat(window.getComputedStyle(yesBtn).paddingLeft) + 4) + 'px';
-        }
-    };
-
-    noBtn.addEventListener('mouseover', () => { if (window.innerWidth > 768) moveNoButton(); });
-    noBtn.addEventListener('click', moveNoButton);
-
-    // YES BUTTON LOGIC + EMAIL TRIGGER
-    document.getElementById('yes-btn').addEventListener('click', () => {
-        const mainCard = document.getElementById('main-card');
-        const successCard = document.getElementById('success-card');
-        
-        const templateParams = {
-            from_name: from,
-            to_name: to,
-            message: `${to} made their birthday wish! 🎉`
-        };
-
-        emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams)
-            .then(() => console.log('Email sent successfully!'))
-            .catch((error) => console.error('Email failed:', error));
-
-        mainCard.classList.add('opacity-0', 'scale-90');
-        setTimeout(() => {
-            mainCard.classList.add('hidden');
-            successCard.classList.remove('hidden');
-            setTimeout(() => {
-                successCard.classList.remove('opacity-0', 'translate-y-10');
-                triggerConfetti();
-            }, 50);
-        }, 500);
+  } else if(state.delivery==='whatsapp'){
+    window.open('https://wa.me/?text='+encodeURIComponent(msg),'_blank');
+  } else {
+    const url = `${location.origin}${location.pathname}?to=${encodeURIComponent(state.to)}&from=${encodeURIComponent(state.from)}&wish=${encodeURIComponent(state.wish)}&emoji=${encodeURIComponent(state.emoji)}&theme=${state.theme}`;
+    navigator.clipboard.writeText(url).then(()=>{
+      const btn = document.querySelector('#s4 .btn-gold');
+      btn.textContent='🔗 Link copied!';
+      setTimeout(()=>btn.textContent='Send it! 🎉',2000);
     });
+  }
+  // proceed to blow-candles
+  setTimeout(()=>transition(4,5), 600);
+}
 
-    function triggerConfetti() {
-        for(let i=0; i<100; i++) {
-            setTimeout(() => {
-                const c = document.createElement('div');
-                c.innerText = ['🎈', '✨', '🎊', '⭐', '🎉', '🍰'][Math.floor(Math.random() * 6)];
-                c.className = 'fixed text-2xl animate-pulse pointer-events-none';
-                c.style.left = Math.random() * 100 + 'vw';
-                c.style.top = Math.random() * 100 + 'vh';
-                c.style.zIndex = '1000';
-                document.body.appendChild(c);
-                const anim = c.animate([
-                    { transform: 'scale(0) rotate(0deg)', opacity: 1 },
-                    { transform: 'scale(2) rotate(360deg)', opacity: 0 }
-                ], { duration: 1000 + Math.random() * 1000 });
-                anim.onfinish = () => c.remove();
-            }, i * 30);
-        }
-    }
+// ── STEP 5: BLOW CANDLES ──
+function buildBlowStep() {
+  document.getElementById('blow-name').textContent = state.to;
+  const shortWish = state.wish.length>80 ? state.wish.slice(0,77)+'…' : state.wish;
+  document.getElementById('wish-text-display').textContent = '"'+shortWish+'"';
+}
+
+let noCount=0;
+const noPhrases=["Not yet…","Still thinking…","Almost! 🤔","The candles are melting! 🕯️","Just blow! 😅","The cake is crying 😢","Okay FINE… wait actually no","Last chance before the frosting melts!","JUST DO IT! 🎉"];
+
+function nudgeNoBtn(){
+  const btn=document.getElementById('no-btn');
+  noCount++;
+  btn.textContent = noPhrases[Math.min(noCount, noPhrases.length-1)];
+  btn.animate([{transform:'rotate(-3deg)'},{transform:'rotate(3deg)'},{transform:'rotate(0)'}],{duration:200});
+  const yes=document.getElementById('yes-btn');
+  const cur=parseFloat(window.getComputedStyle(yes).fontSize);
+  if(cur<28) yes.style.fontSize=(cur+2.5)+'px';
+}
+
+function makeWish(){
+  // Blow out candles
+  const cRow=document.getElementById('big-candles');
+  cRow.innerHTML='<span style="font-size:2rem;">💨</span>';
+  setTimeout(()=>{ cRow.innerHTML='🫙🫙🫙'; },600);
+  // Confetti burst
+  confettiBurst();
+  // Transition to success
+  setTimeout(()=>buildCelebration(), 1200);
+  setTimeout(()=>transition(5,6), 1400);
+}
+
+function buildCelebration(){
+  document.getElementById('cel-name').textContent = state.to;
+  document.getElementById('cel-quote').textContent = QUOTES[state.theme]||QUOTES.heartfelt;
+  document.getElementById('cel-emojis').textContent = Array(5).fill(state.emoji).join(' ');
+}
+
+// ── CONFETTI ──
+function confettiBurst(){
+  const colors=['#e11d48','#f59e0b','#7c3aed','#059669','#3b82f6','#ec4899','#fcd34d'];
+  for(let i=0;i<80;i++){
+    setTimeout(()=>{
+      const c=document.createElement('div');
+      c.className='confetti-piece';
+      c.style.cssText=`left:${Math.random()*100}vw; top:-10px; background:${colors[Math.floor(Math.random()*colors.length)]}; border-radius:${Math.random()>0.5?'50%':'2px'}; animation-duration:${Math.random()*1.5+1}s; animation-delay:0s; width:${Math.random()*8+4}px; height:${Math.random()*8+4}px;`;
+      document.body.appendChild(c);
+      setTimeout(()=>c.remove(),3000);
+    },i*25);
+  }
+}
+
+function celebrateAgain(){
+  confettiBurst();
+  // rebuild blow step
+  transition(6,5);
+  setTimeout(buildBlowStep, 400);
+}
+
+// ── URL PARAMS (shared link landing) ──
+const p = new URLSearchParams(location.search);
+if(p.get('to')){
+  state.to=p.get('to')||'Star';
+  state.from=p.get('from')||'Someone special';
+  state.wish=p.get('wish')||'Wishing you the most wonderful day!';
+  state.emoji=p.get('emoji')||'🌟';
+  state.theme=p.get('theme')||'heartfelt';
+  // skip to blow candles (step 5)
+  window.addEventListener('load',()=>{
+    setTimeout(()=>{
+      document.getElementById('s0').classList.add('hidden');
+      document.getElementById('s5').classList.remove('hidden');
+      document.getElementById('s5').classList.add('fade-in');
+      state.currentStep=5;
+      updateProgress(5);
+      buildBlowStep();
+    },3400);
+  });
+}
 </script>
 </body>
 </html>
