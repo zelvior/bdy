@@ -1,44 +1,51 @@
 # 🎂 bdy - Interactive Birthday Wish Card
 
-A beautiful, interactive single-page application that transforms the simple act of sending birthday wishes into a magical, personalized experience. Celebrate special moments with smooth animations, floating particles, and heartfelt personalization.
+A beautiful, interactive single-page application that transforms the simple act of sending birthday wishes into a magical, personalized experience. Celebrate special moments with smooth animations, floating emojis, interactive candles, and voice activation.
 
 **🎉 Live Demo:** https://zelvior.github.io/bdy/
 
-Share a personalized link like `zelvior.github.io/bdy/?to=Alice&from=Bob&wish=Happy%20Birthday!` to create an instant birthday celebration!
+Share a personalized link like `zelvior.github.io/bdy/?to=Alice&from=Bob` to create an instant birthday celebration!
 
 ---
 
 ## ✨ Features
 
 ### 🎯 Core Functionality
-- **6-Step Wizard**: Guided flow through an immersive birthday card creation experience
-- **Personalization Engine**: Customize recipient name, sender name, relationship, and personal message
-- **Theme Selection**: Choose from 6 distinct emotional vibes (Romantic, Fun, Heartfelt, Funny, Poetic, Bold & Brave)
-- **Character-Aware Messaging**: Theme-specific starter phrases and inspirational quotes tailored to your celebration style
-- **Emoji Signature**: Pick from 12 unique emojis to personalize your message
+- **5-Step Interactive Wizard**: Guided flow through a magical birthday experience
+- **Personalization**: Customize recipient name and sender name
+- **Custom Wish Messages**: Write heartfelt wishes up to 200 characters
+- **Bottle Sealing**: Interactive bottle-tapping mechanic to seal your wish
+- **Interactive Candles**: Click individual candles or use voice activation to blow them out
+- **Voice Activation**: Hold a button and blow into your mic to extinguish candles with audio detection
 
 ### 🎨 Visual Experience
-- **Glass-Morphism Design**: Modern frosted glass UI with soft gradients and elegant shadows
+- **Glass-Morphism Design**: Frosted glass UI with soft gradients and elegant shadows
 - **Smooth Animations**: Sophisticated card transitions with ease curves and fade effects
-- **Floating Particles**: Continuously spawning birthday-themed particles that rise and fade
-- **Flickering Candles**: Animated birthday candles with staggered flicker effects
-- **Confetti Burst**: Explosive celebratory confetti animation with 80+ pieces
-- **Progress Tracking**: Visual step dots and progress bar that evolve as you move through the wizard
+- **Floating Emojis**: Continuously spawning birthday-themed emojis that rise and fade
+- **Flickering Candles**: Animated candles with realistic staggered flicker effects
+- **Interactive Bottle**: Visual feedback when sealing your wish with golden glow
+- **Confetti Burst**: Explosive celebratory confetti animation with 80+ emoji pieces
+- **Progress Tracking**: Visual step dots that highlight as you move through the wizard
 - **Responsive Layout**: Perfectly adapted for mobile (320px), tablet (768px), and desktop (1920px+)
 
-### 🎪 Interactive Elements
-- **Playful "No" Button**: A humorous button that:
-  - Displays increasingly desperate messages as you click it ("Not yet…" → "The cake is crying 😢")
-  - Rotates with each interaction
-  - Makes the "Blow out the candles!" button progressively grow larger
-  - Creates a fun, lighthearted tension
-- **Smart Form Validation**: Real-time field validation with animated shake feedback
-- **Character Counter**: Live character count with visual warning when approaching the 280-character limit
-- **Multiple Share Options**: Copy text to clipboard, share via WhatsApp, or generate a shareable link
+### 🎤 Interactive Elements
+- **Microphone Blow Detection**: Hold a button and blow—the app detects audio volume and blows out all remaining candles
+- **Volume Visualization**: Real-time gradient bar showing audio input level (green → yellow → red)
+- **Tap-to-Blow Candles**: Click individual candles for instant gratification, or let the voice system handle it
+- **Sealing Interaction**: Tap the bottle to seal your wish with satisfying animation and confirmation
+- **Character Counter**: Live character count (0–200) with visual progress
+- **Animated Step Dots**: Clear visual progress through the 5-step journey
 
 ### 🔗 Sharing & URL Parameters
-- **Shareable Links**: Generate personalized URLs that skip directly to the candle-blowing step
-- **URL Parameters**: Support for `to`, `from`, `wish`, `emoji`, and `theme` query parameters
+- **Shareable Links**: Generate personalized URLs with recipient and sender names
+- **URL Parameters**: Support for `to` and `from` query parameters
+- **Export to Gallery**: Save the birthday card as an image (900×900px PNG) with:
+  - Decorative elements and emoji stickers
+  - Your wish in beautiful typography
+  - Personalized greeting with recipient name
+  - Date stamp
+  - Download directly to device gallery
+- **Native Share**: Uses device share sheet (if available) or copies text to clipboard
 - **No Backend Required**: All processing happens client-side—perfect for static hosting
 
 ---
@@ -64,199 +71,252 @@ Deploy `index.html` to your server and access via HTTP/HTTPS—no build step req
 ## 📋 Step-by-Step Walkthrough
 
 ### **Step 0: Animated Loader** 🎂
-- Welcoming splash screen with bouncing cake emoji
-- Animated progress bar with status updates ("Lighting the candles…" → "Candles lit! ✨")
-- Auto-proceeds after ~3.2 seconds
+- Welcoming splash screen with pulsing cake emoji
+- Multi-stage progress bar with status updates:
+  - "Preheating the oven..." → 15%
+  - "Mixing the batter..." → 40%
+  - "Baking the layers..." → 65%
+  - "Frosting the cake..." → 85%
+  - "Lighting the candles! 🕯️" → 100%
+- Auto-proceeds to Step 1 after ~4.2 seconds
 
-### **Step 1: Personalization** 🎁
-**Fields:**
-- **Their name** (max 30 chars): The birthday person's name
-- **Your name** (max 30 chars): Your name or nickname
-- **Relationship**: 8 options including best friend, sibling, partner, parent, colleague, child, cousin, or "Someone special"
+### **Step 1: Welcome & Personalization** 🎉
+**Displays:**
+- Recipient's name (from URL param or default "Star")
+- Personalized greeting: "Hey [Name]! Today is entirely yours..."
+- Sender attribution: "A surprise from [Sender Name]"
 
-**Validation:** All fields are required; missing fields shake and highlight on attempt to proceed
+**URL Parameters:**
+- `to`: Birthday person's name (default: "Star")
+- `from`: Sender's name (default: "Someone Special")
 
-### **Step 2: Theme Selection** 🎨
-Choose from 6 emotional themes, each with a unique color palette and vibes:
-- **💕 Romantic**: Rose/pink gradients - "You mean the world to me"
-- **🎉 Super Fun**: Yellow/gold gradients - "Party time! 🥳"
-- **💜 Heartfelt**: Purple gradients - "Watching you grow has been my greatest joy"
-- **😂 Funny**: Green/mint gradients - "Congratulations on surviving another trip around the sun"
-- **🌙 Poetic**: Blue gradients - "May the stars carry your wishes skyward"
-- **🔥 Bold & Brave**: Orange gradients - "The best is yet to come — go claim it"
+**Action:**
+- Click "Let's Go! 🚀" to proceed to wish writing
 
-Each theme unlocks theme-specific starter phrases and closing quotes.
-
-### **Step 3: Craft Your Wish** ✍️
+### **Step 2: Write Your Wish** ✍️
 **Features:**
-- **Starter Phrases**: Quick-insert buttons with theme-appropriate suggestions
-- **Message Editor**: 280-character textarea with live character counter and warning indicator (turns red at 240+ chars)
-- **Emoji Picker**: 12-emoji grid to choose your signature emoji (`🌟`, `💖`, `🎉`, `✨`, `🎂`, `🥂`, `🌺`, `🎈`, `💫`, `🦋`, `🌈`, `🔥`)
-- **Theme Label**: Displays your selected theme as a visual reminder
+- **Textarea Editor**: Write your heartfelt wish (max 200 characters)
+- **Placeholder**: "Type your deepest birthday wish here..."
+- **Character Counter**: Live count (0 / 200) with bold amber text
+- **Inspirational Prompt**: "Think big. The universe is listening."
+- **Font Style**: Uses Dancing Script cursive font for that personal touch
+- **Word of Caution**: "Be specific. Be bold."
 
-### **Step 4: Preview & Share** 👀
-- **Live Preview**: See exactly how your birthday card will appear with flickering candles, cake, your message, and emoji signature
-- **Delivery Options**:
-  - 🔗 **Share Link**: Copy a personalized URL to clipboard (skips to step 5)
-  - 📋 **Copy Text**: Copy the formatted message for pasting anywhere
-  - 💬 **WhatsApp**: Opens WhatsApp with your pre-filled message
-- **Back Button**: Return to edit your message at any time
+**Validation:**
+- Minimum 3 characters required
+- Button disabled until requirement is met
+- "Seal the Wish 🔒" button enables on valid input
 
-### **Step 5: Make a Wish** 🌬️
-- **Candle Display**: Large flickering candles (🕯️) ready to be blown out
-- **Playful "No" Button**: Gets progressively harder to click with messages like:
-  - "Not yet…"
-  - "Still thinking…"
-  - "Almost! 🤔"
-  - "The candles are melting! 🕯️"
-  - "Just blow! 😅"
-  - "The cake is crying 😢"
-  - And more...
-- **Button Growth**: The "Blow out the candles!" button grows with each "No" click
-- **Secret Wish Moment**: Encourages the birthday person to make a silent wish
+**Navigation:**
+- "Seal the Wish 🔒" → Step 3
+- "← Back" → Step 1
 
-### **Step 6: Celebration** 🥳
-- **Confetti Explosion**: 80 colorful confetti pieces burst across the screen
-- **Celebratory Message**: Personalized congratulatory message
-- **Inspirational Quote**: Theme-based quote displayed in a gold box
-- **Signature Emojis**: Your chosen emoji repeated 5 times
-- **Replay Options**:
-  - 🔄 **Make Another**: Reload and start fresh
-  - 🎊 **Celebrate Again**: Trigger another confetti burst
+### **Step 3: Seal Your Wish** 🌊
+**Interactive Bottle Mechanic:**
+- **Visual Element**: Bottle emoji (🍾) with dashed gold border
+- **Interaction**: Tap the bottle to seal your wish
+- **Animation Sequence**:
+  1. Bottle rotates 25° and scales up (1.25x) with golden glow
+  2. Bottle emoji transforms to lock (🔒)
+  3. "✅ Wish sealed inside!" message appears in green
+  4. Dashed border converts to solid green border
+  5. Mini confetti burst (20 floating emojis)
+- **Preview Display**: Your wish text appears truncated in the bottle area
+- **State Tracking**: Can only seal once; state persists during step
+
+**Navigation:**
+- "Blow Out the Candles 🕯️" → Step 4 (enabled after sealing)
+- "← Back" → Step 2 (resets bottle state)
+
+### **Step 4: Blow the Candles** 🕯️
+**Visual Setup:**
+- **Candle Count**: 5 candles display as emoji rows with flames (🔥) and wax (🕯️)
+- **Flame Animation**: Each candle flickers independently with staggered timing
+- **Status Label**: "5 candles burning..." (updates as you blow them out)
+
+**Two Methods to Extinguish:**
+
+**Method 1: Manual Tap**
+- Click any individual candle to blow it out
+- "Blow ring" animation expands and fades when candle is clicked
+- Character emoji for each extinguished flame
+- No touch, no time limit
+
+**Method 2: Microphone Voice Activation**
+- **UI**: "🎤 Hold to Blow" button in golden gradient section
+- **Flow**:
+  1. Tap and hold the button to activate microphone
+  2. Browser prompts for microphone permission (first time only)
+  3. Audio context starts listening for sound
+  4. Volume bar fills in gradient (green → yellow → red) as you blow
+  5. At 55% volume threshold, all remaining candles blow out automatically
+- **Visual Feedback**:
+  - Button changes to "💨 Blowing..." state
+  - Button shines with breathing animation
+  - Volume bar shows real-time audio level
+  - Hint text updates: "Blow hard! Watch the bar fill up."
+- **Fallback**: "Mic access denied — tap candles instead!" if permission denied
+- **Release**: Release the button to stop listening and close audio context
+
+**Status Updates:**
+- Live label shows remaining candles: "5 candles burning..." → "1 candle still burning..." → "🎉 All candles out!"
+- When all 5 candles are extinguished, the status turns green and the next button enables
+
+**Navigation:**
+- "Make It Official ✨" → Step 5 (enabled after all candles blow out)
+- "← Back" → Step 3 (resets candles state)
+
+### **Step 5: Celebration** 🥳
+**Final Screen Display:**
+- **Celebration Emoji**: Shining, bouncing 🥳 with glow effect
+- **Title**: "It's Official!" in Dancing Script cursive font (amber color)
+- **Message**: "The candles are out, the wish is sealed, and the universe is already working on it. May this be your most magical year yet! 🌟"
+- **Wish Display**: Your full wish shown in elegant typography in a gradient box (amber to pink)
+- **Footer**: "Happy Birthday from [Sender Name] 🎂"
+
+**Confetti Celebration:**
+- 80 confetti pieces (emojis: 🎈, ✨, 🎊, ⭐, 🎉, 🌟, 🍰, 🎁) burst onto screen
+- Each piece falls with rotation, opacity fade, and scale change
+- Duration: ~3 seconds per piece
+
+**Action Buttons:**
+- **📸 Share Your Wish**: 
+  - Uses native share sheet (if available) with formatted text
+  - Fallback: Copies wish to clipboard with "✅ Copied!" confirmation (2s)
+  - Format: "🎂 My birthday wish: "[wish]" — made on [date]"
+- **🔄 Start Over**: Reloads the page to begin fresh
+- **🖼️ Save to Gallery**: Exports the birthday card as high-quality PNG image (see below)
+
+---
+
+## 🎨 Export to Gallery Feature
+
+### Generate Custom Birthday Card Image
+The **"🖼️ Save to Gallery"** button creates a beautiful 900×900px PNG:
+
+**Design Elements:**
+- Gradient background (gold → yellow → pink)
+- Decorative blurred circles (semi-transparent colored orbs)
+- White frosted glass card with border and shadow
+- Scattered emoji decorations around the card edges (🎈, 🎉, ✨, 🌟, 🎊, 🍰, 🎁, ⭐)
+
+**Card Content:**
+- Large cake emoji (🎂) centered at top
+- Personalized heading: "Happy Birthday, [Name]!" in Dancing Script
+- Decorative divider lines with gradient effect
+- Section label: "✦ YOUR WISH ✦"
+- Your wish text wrapped and formatted in Dancing Script cursive
+- Another divider line
+- Footer: "With love, [Sender Name] 🎀"
+- Date stamp: Current date in long format (e.g., "June 10, 2026")
+
+**Font Rendering:**
+- Primary: "Dancing Script" loaded via FontFace API at runtime
+- Fallback: System sans-serif if custom font fails to load
+- Text shadows for depth and readability
+
+**Export Process:**
+1. Button shows "⏳ Generating..." while image is created
+2. Button disabled during generation (~2-3 seconds)
+3. Automatic download triggered (filename: `birthday-wish-[name].png`)
+4. Button shows "✅ Saved!" for 2.5 seconds
+5. Button returns to "🖼️ Save to Gallery"
+
+**Compatibility:**
+- Works on all modern browsers with Canvas API support
+- Supported on mobile (downloads to Photos/Gallery app)
+- Uses PNG format for high quality and transparency support
 
 ---
 
 ## 🔧 Configuration & Customization
 
-### URL Parameters (Shareable Link Format)
+### URL Parameters
 ```
-https://zelvior.github.io/bdy/?to=Alice&from=Bob&wish=HappyBirthday&emoji=💖&theme=romantic
+https://zelvior.github.io/bdy/?to=Alice&from=Bob
 ```
 
 | Parameter | Description | Example | Default |
 |-----------|-------------|---------|---------|
 | `to` | Birthday person's name | `Alice` | `Star` |
-| `from` | Sender's name | `Bob` | `Someone special` |
-| `wish` | Custom message (URL encoded) | `Happy%20Birthday` | `Wishing you the most wonderful day!` |
-| `emoji` | Signature emoji | `💖` | `🌟` |
-| `theme` | Theme choice | `romantic` | `heartfelt` |
+| `from` | Sender's name | `Bob` | `Someone Special` |
 
 **Example URLs:**
 ```
-https://zelvior.github.io/bdy/?to=Sarah&from=Mom&theme=romantic
-https://zelvior.github.io/bdy/?to=John&from=Friends&wish=Here%27s%20to%20another%20amazing%20year
-```
-
-### Color Scheme Customization
-
-Edit the CSS variables in the `<style>` section (lines 11–19):
-
-```css
-:root {
-  --rose: #e11d48;        /* Primary accent color (buttons, active states) */
-  --rose-light: #ffe4e6;  /* Light rose for backgrounds */
-  --gold: #f59e0b;        /* Secondary accent color (theme picker) */
-  --gold-light: #fef3c7;  /* Light gold for quote backgrounds */
-  --plum: #7c3aed;        /* Tertiary accent color (toggle selections) */
-  --plum-light: #ede9fe;  /* Light plum for backgrounds */
-  --mint: #059669;        /* Success/completion color (progress dots) */
-  --bg: #fff9f0;          /* Main background color */
-}
+https://zelvior.github.io/bdy/?to=Sarah&from=Mom
+https://zelvior.github.io/bdy/?to=John&from=Friends&to=Dad
 ```
 
 ### Font Customization
 
-The application uses Google Fonts (line 9). Modify the font import to customize typography:
+The application uses Google Fonts. Modify the font import (line 9):
 
 ```html
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;1,9..144,400&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Quicksand:wght@400;500;600;700&display=swap');
 ```
 
-- **Fraunces**: Elegant serif font for headings
-- **DM Sans**: Clean sans-serif for body text
+- **Dancing Script**: Elegant cursive font for headings and wish text
+- **Quicksand**: Clean, rounded sans-serif for body text and UI
+
+### Color Scheme Customization
+
+Edit the CSS gradients and colors in the `<style>` section:
+
+```css
+/* Background gradient (body) */
+background: linear-gradient(135deg, #fef3c7 0%, #fde68a 40%, #fce7f3 100%);
+
+/* Primary colors */
+--gold: #f59e0b;        /* Main accent (buttons, active states) */
+--gold-light: #fbbf24;  /* Lighter gold for hover states */
+--success: #10b981;     /* Green for completion/sealed */
+--danger: #ef4444;      /* Red for mic listening state */
+```
 
 ### Message Customization
 
-**"No" Button Phrases** (around line 618):
+**Loader Stages** (around line 388):
 ```javascript
-const noPhrases=[
-  "Not yet…",
-  "Still thinking…",
-  "Almost! 🤔",
-  "The candles are melting! 🕯️",
-  "Just blow! 😅",
-  "The cake is crying 😢",
-  // ... add more messages
+const loaderStages = [
+  [15, 'Preheating the oven...'],
+  [40, 'Mixing the batter...'],
+  [65, 'Baking the layers...'],
+  [85, 'Frosting the cake...'],
+  [100,'Lighting the candles! 🕯️'],
 ];
 ```
 
-**Theme-Specific Starters** (lines 418–425):
+**Background Float Emojis** (line 327):
 ```javascript
-const STARTERS = {
-  romantic: ["You mean the world to me", "Every day with you is a gift", "My heart is fuller because of you"],
-  fun: ["Party time! 🥳", "You're officially another year awesome", "Today's forecast: 100% cake and happiness"],
-  heartfelt: ["Watching you grow has been my greatest joy", "You make every room brighter", "I'm so proud of who you've become"],
-  funny: ["Congratulations on surviving another trip around the sun", "Age is just a number, but yours is getting big", "You're not old, you're vintage"],
-  poetic: ["May the stars carry your wishes skyward", "Another chapter begins today, write it beautifully", "You are made of stardust and wonder"],
-  adventurous: ["The best is yet to come — go claim it", "This year, dream bigger and dare harder", "Here's to the bold choices ahead of you"]
-};
+const EMOJIS_BG = ['🎈','🎉','✨','🎊','⭐','🌟','🍰','🎁'];
 ```
 
-**Closing Quotes** (lines 427–434):
+**Confetti Emojis** (line 591):
 ```javascript
-const QUOTES = {
-  romantic: "\"Where there is love, there is life.\"",
-  fun: "\"Life is short — eat the cake first.\"",
-  heartfelt: "\"The most precious gift we can offer anyone is our attention.\"",
-  funny: "\"Age is an issue of mind over matter. If you don't mind, it doesn't matter.\"",
-  poetic: "\"We are all made of stardust.\"",
-  adventurous: "\"The biggest adventure you can take is to live the life of your dreams.\""
-};
+const pieces = ['🎈','✨','🎊','⭐','🎉','🌟','🍰','🎁','🎀'];
 ```
-
-### Emoji Customization
-
-Add or modify emojis in the emoji picker (line 416):
-```javascript
-const EMOJIS = ['🌟','💖','🎉','✨','🎂','🥂','🌺','🎈','💫','🦋','🌈','🔥'];
-```
-
----
-
-## 🎨 Theming Details
-
-Each theme provides a cohesive visual and emotional experience:
-
-| Theme | Primary Color | Sample Starter | Quote | Best For |
-|-------|---------------|--------|-------|----------|
-| Romantic | Rose (#e11d48) | "You mean the world to me" | "Where there is love, there is life." | Partners, close loved ones |
-| Fun | Gold (#f59e0b) | "Party time! 🥳" | "Life is short — eat the cake first." | Friends, energetic celebrations |
-| Heartfelt | Plum (#7c3aed) | "Watching you grow..." | "The most precious gift we can offer anyone is our attention." | Family, meaningful bonds |
-| Funny | Mint (#059669) | "Congratulations on surviving..." | "Age is an issue of mind over matter. If you don't mind, it doesn't matter." | Friends, colleagues |
-| Poetic | Sky Blue | "May the stars carry..." | "We are all made of stardust." | Dreamers, artists |
-| Bold & Brave | Orange | "The best is yet to come" | "The biggest adventure you can take is to live the life of your dreams." | Go-getters, explorers |
 
 ---
 
 ## 📱 Responsive Design
 
 ### Mobile (320px–480px)
-- Single-column layout with optimized spacing
-- Touch-friendly button sizing (48px+ tap targets)
-- Adjusted emoji grid (5 columns instead of 6)
-- Compact card padding
-- All animations remain smooth
+- Reduced flame emoji size (1.2rem) and wax emoji (1.4rem)
+- Optimized card padding (1.5rem 1.25rem)
+- Touch-friendly tap targets for candles and buttons
+- Adjusted layout for smaller screens
 
 ### Tablet (481px–1024px)
-- Optimized spacing and readability
-- Full emoji grid
-- Comfortable thumb-reach buttons
+- Standard layout with full spacing
+- Touch-optimized interactions
+- All animations enabled
 
 ### Desktop (1024px+)
 - Full feature set enabled
-- Hover effects on all interactive elements
-- Playful button rotation on hover
+- Hover effects on buttons
+- Optimized for mouse input
 - Maximum animation visual fidelity
+- Flex layout for side-by-side buttons on final screen
 
 ---
 
@@ -272,9 +332,14 @@ Each theme provides a cohesive visual and emotional experience:
 
 **Requirements:**
 - ES6+ JavaScript support
+- Web Audio API (for microphone voice activation)
 - Web Animations API
 - Clipboard API (for copy/share features)
-- CSS Grid & Flexbox support
+- Canvas API (for image export)
+- CSS Backdrop Filter support (for glass morphism)
+
+**Permission Requirements:**
+- Microphone access (optional, requested on first use for voice activation feature)
 
 ---
 
@@ -285,26 +350,24 @@ All dependencies are loaded from **CDN**—no npm, no build step required!
 | Dependency | Purpose | CDN |
 |-----------|---------|-----|
 | Tailwind CSS | Utility styling | `https://cdn.tailwindcss.com` |
-| Google Fonts | Typography (Fraunces, DM Sans) | Google Fonts API |
+| Google Fonts | Typography (Dancing Script, Quicksand) | Google Fonts API |
 | Web APIs | Native browser APIs | Built-in |
 
 ---
 
 ## 🎯 State Management
 
-The application uses a single global state object:
+The application uses simple global variables for state:
 
 ```javascript
-const state = {
-  to: '',           // Birthday person's name
-  from: '',         // Sender's name
-  relation: '',     // Relationship type
-  theme: '',        // Selected theme
-  wish: '',         // Custom message (max 280 chars)
-  emoji: '🌟',      // Signature emoji
-  delivery: 'link', // Delivery method (link/copy/whatsapp)
-  currentStep: 0    // Current wizard step (0–6)
-};
+let wish = '';              // User's written wish (max 200 chars)
+let candlesBlown = 0;       // Number of candles extinguished
+let sealed = false;         // Whether the bottle has been sealed
+let audioCtx = null;        // Audio context for microphone
+let analyser = null;        // Audio analyser node
+let micStream = null;       // Microphone stream
+let micActive = false;      // Is microphone currently listening?
+let micTimer = null;        // Timer for audio level polling
 ```
 
 ---
@@ -312,25 +375,29 @@ const state = {
 ## 🎭 Animation Library
 
 ### CSS Keyframe Animations
-- **`rise`**: Particles float upward with rotation and opacity fade
-- **`cardIn`**: Cards fade in from below with scale effect
-- **`flicker`**: Candles flicker realistically (staggered with `--d` variable)
-- **`spinBounce`**: Celebratory emoji bounce and spin (cake on loader, star on celebration)
-- **`confFall`**: Confetti pieces fall and rotate across screen
+- **`floatUp`**: Emojis float upward with rotation, scaling, and opacity fade (4.5s)
+- **`pulse`**: Cake emoji pulses on loader screen (1.4s)
+- **`flicker`**: Candle flames flicker realistically with staggered timing (0.55s)
+- **`blowOut`**: Ring animation that expands when candle is blown out (0.5s)
+- **`breathe`**: Microphone button gently scales up/down when listening (1s infinite)
+- **`shine`**: Star emoji shines with brightness and glow effect (2s infinite)
+- **`confettiFall`**: Confetti pieces fall, rotate, and fade (1.5–3.5s)
 
 ### JavaScript Animations
-- **Web Animations API**: Used for button shake effects on validation errors
-- **setTimeout-based**: Sequenced multi-step animations for complex scenes (confetti, transitions)
+- **Web Animations API**: Used for smooth card transitions and fade effects
+- **setTimeout-based**: Sequenced multi-step animations (loader stages, confetti bursts)
+- **requestAnimationFrame**: Used for rendering class changes to optimize DOM repaints
 
 ---
 
 ## 📊 Performance Characteristics
 
-- **Bundle Size**: ~8 KB (minified HTML single file)
-- **Load Time**: <1s on modern networks (CDN dependencies)
-- **Frame Rate**: Consistent 60fps animations
-- **Memory**: Minimal footprint (particles auto-cleanup after 8s, confetti after 3s)
-- **Accessibility**: Semantic HTML, good color contrast, keyboard navigable (Tab + Enter supported)
+- **Bundle Size**: ~25 KB (unminified HTML single file with embedded styles and scripts)
+- **Load Time**: <2s on modern networks (including CDN dependencies)
+- **Frame Rate**: Consistent 60fps animations on modern devices
+- **Memory**: Minimal footprint (floating emojis auto-cleanup after 5s, confetti after 4s)
+- **Audio Processing**: Efficient real-time audio analysis with 256-point FFT
+- **Canvas Rendering**: Hardware-accelerated image export for 900×900px PNG
 
 ---
 
@@ -339,43 +406,45 @@ const state = {
 ### File Structure
 ```
 bdy/
-└── index.html     # Single-file monolithic application (~690 lines)
+├── index.html          # Single-file monolithic application (~800 lines)
+└── README.md           # This documentation
 ```
 
 ### Code Organization
-1. **HTML** (lines 1–227): Semantic structure with 7 card steps (0–6)
-2. **CSS** (lines 10–221): Modular style sections with clear comments
-3. **JavaScript** (lines 407–689):
-   - State management (lines 408–416)
-   - Particle system (lines 436–446)
-   - Step navigation & validation (lines 458–524)
-   - Theme logic (lines 526–531)
-   - Wish crafting (lines 533–571)
-   - Preview & share (lines 573–608)
-   - Candle blow interaction (lines 610–667)
-   - Confetti system (lines 648–660)
-   - URL parameter handling (lines 669–688)
+1. **HTML** (lines 199–321): Semantic structure with 6 card steps (0–5)
+2. **CSS** (lines 8–197): Embedded styles with clear comments for each section
+3. **JavaScript** (lines 323–797):
+   - Configuration (lines 324–340)
+   - URL parameter parsing (lines 329–334)
+   - State variables (lines 336–340)
+   - Floating emoji system (lines 342–353)
+   - Step dots rendering (lines 355–365)
+   - Card transition logic (lines 367–383)
+   - Loader sequence (lines 385–420)
+   - Step navigation (lines 422–442)
+   - Wish input handling (lines 426–442)
+   - Bottle sealing interaction (lines 444–466)
+   - Candle system (lines 485–527)
+   - Microphone voice activation (lines 529–579)
+   - Celebration & confetti (lines 581–605)
+   - Canvas image export (lines 607–783)
+   - Native share functionality (lines 785–796)
 
 ### Key JavaScript Functions
 | Function | Purpose |
 |----------|---------|
-| `goTo(step)` | Navigate to a specific step (with validation) |
-| `transition(from, to)` | Smooth animated card transition with fade effects |
-| `validateStep(step)` | Field validation with error feedback (shake animation) |
-| `collectStep(step)` | Gather user input from current step into state |
-| `pickTheme(el)` | Theme selection handler |
-| `buildStep3()` | Dynamically populate wish step with starters and emojis |
-| `buildPreview()` | Render preview card with final formatting |
-| `pickDelivery(el)` | Select delivery method (link/copy/whatsapp) |
-| `sendWish()` | Handle sharing (copy/WhatsApp/link) |
-| `buildBlowStep()` | Prepare candle-blowing step with personalization |
-| `nudgeNoBtn()` | Handle "No" button clicks (rotate, grow yes button) |
-| `makeWish()` | Trigger candle blow-out celebration and confetti |
-| `buildCelebration()` | Build final celebration screen with quote and emojis |
-| `confettiBurst()` | Spawn 80 confetti pieces with staggered timing |
-| `celebrateAgain()` | Trigger another confetti burst and return to step 5 |
-| `spawnParticle()` | Create floating background particles |
-| `updateProgress(step)` | Update progress bar and step dots |
+| `spawnFloat(intense)` | Create floating emoji particles with animation |
+| `renderDots(containerId, currentStep)` | Update progress indicator dots |
+| `goTo(fromId, toId, dotStep)` | Transition between cards with fade effect |
+| `startMic()` | Initialize microphone and audio analysis |
+| `stopMic()` | Close audio context and cleanup mic stream |
+| `buildCandles()` | Create 5 interactive candle elements |
+| `blowCandle(candle)` | Mark candle as blown and trigger animation |
+| `updateCandleLabel()` | Update status text based on remaining candles |
+| `triggerBigConfetti()` | Spawn 80 confetti emoji pieces |
+| `drawExportCard()` | Render birthday card to canvas for export |
+| `wrapText(ctx, text, x, y, maxW, lineH)` | Wrap text on canvas for export image |
+| `roundRect(ctx, x, y, w, h, r)` | Draw rounded rectangle on canvas |
 
 ---
 
@@ -405,35 +474,55 @@ Simply upload `index.html` to your web server via FTP/SSH.
 ## 💡 Usage Tips & Best Practices
 
 ### For Best Experience
-- **Desktop**: Hover over theme buttons and the "No" button to see hover effects
-- **Mobile**: Tap the "No" button repeatedly to see the progressive button growth challenge
-- **Full Screen**: Maximizes the particle animation background
-- **Share**: Use the link option to let recipients experience the full wizard from step 5
-- **WhatsApp**: Send directly to individuals or groups for instant birthday celebrations
+- **Desktop**: Use the microphone feature for a fun hands-free experience
+- **Mobile**: Tap candles manually or use voice activation (if supported)
+- **Full Screen**: Maximizes the floating emoji animation background
+- **Share**: Save the card as an image to share on social media or messaging apps
+- **Multiple Uses**: Create and export different wish cards for multiple people
+
+### Voice Activation Tips
+- **Positioning**: Hold phone/laptop mic close to your mouth for better detection
+- **Force**: Blow firmly but naturally—the app detects volume levels, not specific sounds
+- **Timing**: You have as long as you want after pressing the button
+- **Fallback**: If microphone doesn't work, just tap the candles manually
 
 ### Personalization Ideas
-- **For Colleagues**: Use the "Funny" theme with the relationship set to "Colleague"
-- **For Loved Ones**: Use "Romantic" or "Heartfelt" with custom quotes
-- **For Friends**: Use "Super Fun" with party-themed messages
-- **For Mentors**: Use "Poetic" or "Bold & Brave" for inspirational vibes
+- **For Family**: Use recipient and sender names directly
+- **For Colleagues**: Keep it professional with formal names
+- **For Friends**: Use nicknames and inside jokes
+- **For Long Distance**: Export and send as a beautiful image
 
 ### Creative Uses
 - Digital birthday cards for remote friends and family
-- Team celebrations in work Slack channels (share the link)
-- Social media birthday posts (WhatsApp share)
-- Email signature birthday wishes
+- Social media birthday posts (export to gallery)
+- Email birthday messages
+- Printed cards (screenshot or export and print)
 - Event website birthday feature
-- Corporate recognition moments
+- Corporate team celebrations
 - Surprise birthday reveals (send link to group chat)
 
 ---
 
 ## 🐛 Troubleshooting
 
+### Microphone Not Working
+- Check browser console (F12) for errors
+- Verify microphone permission is granted (check browser settings)
+- Test with another device or browser
+- Ensure you're on HTTPS (some browsers require this for audio)
+- Try tapping candles instead as fallback
+
+### Volume Bar Not Responding
+- Check microphone volume level on your device
+- Blow harder or position mic closer to your mouth
+- Test microphone with system audio settings first
+- Threshold is 55% of max volume—may need adjustment based on device
+
 ### Confetti Not Showing
 - Check browser DevTools console (F12) for errors
-- Ensure z-index conflicts don't exist with other elements
-- Verify JavaScript is enabled in browser settings
+- Ensure JavaScript is enabled in browser settings
+- Verify browser supports DOM manipulation
+- Try a different browser
 
 ### Animations Stuttering
 - Close other browser tabs to free memory
@@ -441,21 +530,24 @@ Simply upload `index.html` to your web server via FTP/SSH.
 - Test on a device with better GPU capabilities
 - Check browser performance in DevTools
 
-### WhatsApp Share Not Working
-- Ensure you're on a device with WhatsApp installed (or WhatsApp Web)
-- Check that your browser allows pop-ups (disable pop-up blockers)
-- Verify you're on an HTTPS connection (required for WhatsApp links)
+### Image Export Not Working
+- Verify browser has Canvas API support
+- Check browser console for errors
+- Try in a different browser
+- Ensure sufficient disk space for file download
+- Clear browser cache if stuck in "Generating..." state
+
+### Fonts Not Loading
+- Check internet connection (fonts load from CDN)
+- Wait a few seconds for Google Fonts to load
+- Check browser console for CORS errors
+- Fallback fonts will still display even if custom fonts fail
 
 ### URL Parameters Not Loading
-- Ensure all parameter values are URL-encoded (spaces = `%20`, quotes = `%27`)
-- Verify parameter names are lowercase (`to`, `from`, `wish`, `emoji`, `theme`)
+- Ensure parameters are URL-encoded (spaces = `%20`)
+- Verify parameter names are lowercase (`to`, `from`)
 - Check browser console for parsing errors
-- Test with simple parameters first
-
-### Name/Message Not Persisting
-- The wizard resets when you reload the page (except for URL parameters)
-- Use the "Back" buttons to edit without losing data
-- Copy your link before sharing to preserve personalization
+- Test with simple parameter values first
 
 ---
 
@@ -465,33 +557,34 @@ Simply upload `index.html` to your web server via FTP/SSH.
 ```javascript
 const params = new URLSearchParams({
   to: 'Alice',
-  from: 'Bob',
-  wish: 'Happy Birthday! Have an amazing day!',
-  emoji: '💖',
-  theme: 'romantic'
+  from: 'Bob'
 });
 const link = `https://zelvior.github.io/bdy/?${params.toString()}`;
 console.log(link);
 ```
 
-### Customize Theme Starter Phrases
+### Customize Loader Messages
 ```javascript
-STARTERS.custom = [
-  "Your custom starter message",
-  "Another personalized message",
-  "And another one"
+const loaderStages = [
+  [15, 'Starting the celebration...'],
+  [40, 'Warming up the joy...'],
+  [65, 'Preparing the magic...'],
+  [85, 'Setting up the fun...'],
+  [100,'Ready to celebrate! 🎉'],
 ];
 ```
 
-### Add a New Theme
+### Add More Floating Emojis
 ```javascript
-STARTERS.mystical = ["The stars align for you", "Magic flows through your veins", "This year, anything is possible"];
-QUOTES.mystical = "\"Magic is real.\"";
+const EMOJIS_BG = ['🎈','🎉','✨','🎊','⭐','🌟','🍰','🎁','🎀','💝','🎀'];
 ```
 
-### Add More Emojis to the Picker
+### Adjust Microphone Sensitivity
 ```javascript
-EMOJIS.push('💝', '🎀', '🎊', '⭐');
+// Current threshold: 55% (in startMic function)
+if (pct > 55) { // Change 55 to adjust sensitivity
+  // blow all remaining candles
+}
 ```
 
 ---
@@ -499,18 +592,18 @@ EMOJIS.push('💝', '🎀', '🎊', '⭐');
 ## 🎁 Features Roadmap
 
 Potential future enhancements (not yet implemented):
-- Voice message support
-- Photo collage integration
-- Countdown timer before send
-- Analytics tracking (e.g., how many people clicked a link)
+- Multiple candle count selection
+- Audio visualization (equalizer during mic input)
+- Video recording of the celebration
+- Animated GIF export
 - Multi-language support
 - Dark mode toggle
-- Custom background upload
-- Email integration
-- Database persistence
-- Social sharing preview cards (OG meta tags)
-- Multiple recipients (send to group)
-- Scheduled send times
+- Custom background patterns
+- Wish history/saved wishes
+- Social media integration (Twitter, Instagram sharing)
+- Leaderboard for voice activation (who blew candles fastest)
+- Birthday date scheduling
+- Email delivery of wish cards
 
 ---
 
