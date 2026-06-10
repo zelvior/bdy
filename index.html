@@ -5,687 +5,795 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Happy Birthday! 🎂</title>
 <script src="https://cdn.tailwindcss.com"></script>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;1,9..144,400&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --rose: #e11d48;
-    --rose-light: #ffe4e6;
-    --gold: #f59e0b;
-    --gold-light: #fef3c7;
-    --plum: #7c3aed;
-    --plum-light: #ede9fe;
-    --mint: #059669;
-    --bg: #fff9f0;
-  }
-  * { box-sizing: border-box; }
-  body {
-    margin: 0;
-    font-family: 'DM Sans', sans-serif;
-    background: var(--bg);
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow-x: hidden;
-  }
-  h1,h2,.serif { font-family: 'Fraunces', serif; }
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Quicksand:wght@400;500;600;700&display=swap');
 
-  /* PARTICLES */
-  #particles { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
-  .particle {
-    position: absolute; bottom: -40px; border-radius: 50%;
-    animation: rise linear forwards;
-  }
-  @keyframes rise {
-    0% { transform: translateY(0) rotate(0deg) scale(0.5); opacity: 0.7; }
-    100% { transform: translateY(-110vh) rotate(720deg) scale(1.2); opacity: 0; }
-  }
+*,*::before,*::after{box-sizing:border-box;}
 
-  /* WRAPPER */
-  #app {
-    position: relative; z-index: 10;
-    width: 100%; max-width: 480px;
-    margin: 0 auto; padding: 1.5rem 1rem;
-    min-height: 100vh;
-    display: flex; flex-direction: column; justify-content: center;
-  }
+body {
+  font-family: 'Quicksand', sans-serif;
+  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 40%, #fce7f3 100%);
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  margin: 0;
+  padding: 1rem;
+}
 
-  /* CARDS */
-  .card {
-    background: #fff;
-    border-radius: 28px;
-    border: 1.5px solid rgba(0,0,0,0.07);
-    padding: 2rem 1.75rem;
-    box-shadow: 0 4px 24px rgba(0,0,0,0.07);
-    transition: opacity 0.4s, transform 0.4s;
-  }
-  .card.hidden { display: none; }
-  .card.fade-out { opacity: 0; transform: translateY(-16px) scale(0.97); }
-  .card.fade-in { animation: cardIn 0.45s cubic-bezier(.22,1,.36,1) forwards; }
-  @keyframes cardIn {
-    from { opacity: 0; transform: translateY(24px) scale(0.97); }
-    to   { opacity: 1; transform: translateY(0) scale(1); }
-  }
+.script { font-family: 'Dancing Script', cursive; }
 
-  /* STEP DOTS */
-  .step-dots { display: flex; gap: 8px; justify-content: center; margin-bottom: 1.5rem; }
-  .dot {
-    width: 8px; height: 8px; border-radius: 50%;
-    background: #e5e7eb; transition: all 0.3s;
-  }
-  .dot.active { background: var(--rose); transform: scale(1.3); }
-  .dot.done { background: var(--mint); }
+/* ── FLOATS ── */
+.float {
+  position: fixed;
+  pointer-events: none;
+  z-index: 1;
+  animation: floatUp 4.5s linear forwards;
+}
+@keyframes floatUp {
+  0%   { transform: translateY(110vh) scale(0) rotate(0deg); opacity: 0; }
+  15%  { opacity: .9; }
+  100% { transform: translateY(-15vh) scale(1.4) rotate(400deg); opacity: 0; }
+}
 
-  /* PROGRESS BAR */
-  .progress-track {
-    height: 4px; background: #f3f4f6; border-radius: 99px;
-    margin-bottom: 1.75rem; overflow: hidden;
-  }
-  .progress-fill {
-    height: 100%; border-radius: 99px;
-    background: linear-gradient(90deg, var(--rose), var(--gold));
-    transition: width 0.6s cubic-bezier(.22,1,.36,1);
-  }
+/* ── CARD ── */
+.card {
+  background: rgba(255,255,255,.78);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border-radius: 2rem;
+  border: 2px solid rgba(255,255,255,.65);
+  padding: 2rem 1.75rem;
+  width: 100%;
+  max-width: 440px;
+  box-shadow: 0 24px 48px rgba(0,0,0,.12);
+  position: relative;
+  z-index: 10;
+  transition: opacity .45s cubic-bezier(.4,0,.2,1), transform .45s cubic-bezier(.4,0,.2,1);
+}
+.card.hidden { display: none !important; }
+.card.fade-out { opacity: 0; transform: scale(.93) translateY(-8px); }
+.card.fade-in  { opacity: 0; transform: translateY(20px); }
+.card.visible  { opacity: 1; transform: translateY(0); }
 
-  /* INPUTS */
-  input[type=text], input[type=email], textarea, select {
-    width: 100%; padding: 0.75rem 1rem;
-    border: 1.5px solid #e5e7eb; border-radius: 14px;
-    font-family: 'DM Sans', sans-serif; font-size: 15px;
-    background: #fafaf9; color: #111;
-    transition: border-color 0.2s, box-shadow 0.2s;
-    outline: none; resize: none;
-  }
-  input[type=text]:focus, input[type=email]:focus, textarea:focus, select:focus {
-    border-color: var(--rose); box-shadow: 0 0 0 3px rgba(225,29,72,0.12);
-  }
-  textarea { min-height: 90px; }
-  label { display: block; font-size: 13px; font-weight: 600; color: #6b7280; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.05em; }
+/* ── STEP DOTS ── */
+.step-dots { display: flex; gap: .5rem; justify-content: center; margin-bottom: 1.5rem; }
+.dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: #fde68a;
+  border: 2px solid #f59e0b;
+  transition: all .3s;
+}
+.dot.active { background: #f59e0b; transform: scale(1.35); }
+.dot.done   { background: #10b981; border-color: #059669; }
 
-  /* BUTTONS */
-  .btn {
-    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-    padding: 0.8rem 1.6rem; border-radius: 14px; font-size: 15px; font-weight: 600;
-    cursor: pointer; border: none; transition: all 0.18s;
-    font-family: 'DM Sans', sans-serif;
-  }
-  .btn:active { transform: scale(0.97); }
-  .btn-primary {
-    background: var(--rose); color: #fff;
-    box-shadow: 0 4px 14px rgba(225,29,72,0.25);
-  }
-  .btn-primary:hover { background: #c81140; }
-  .btn-ghost {
-    background: transparent; color: #9ca3af;
-    border: 1.5px solid #e5e7eb;
-  }
-  .btn-ghost:hover { background: #f9fafb; color: #374151; }
-  .btn-full { width: 100%; }
-  .btn-gold {
-    background: var(--gold); color: #fff;
-    box-shadow: 0 4px 14px rgba(245,158,11,0.3);
-  }
-  .btn-gold:hover { background: #d97706; }
+/* ── LOADER ── */
+.pulse-cake { font-size: 4rem; animation: pulse 1.4s ease-in-out infinite; }
+@keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.18)} }
 
-  /* EMOJI PICKER */
-  .emoji-grid {
-    display: grid; grid-template-columns: repeat(6,1fr); gap: 8px; margin-top: 8px;
-  }
-  .emoji-btn {
-    font-size: 22px; background: #f9fafb; border: 1.5px solid #e5e7eb;
-    border-radius: 10px; padding: 6px 0; cursor: pointer;
-    transition: all 0.15s; text-align: center;
-  }
-  .emoji-btn:hover, .emoji-btn.selected { background: var(--rose-light); border-color: var(--rose); transform: scale(1.1); }
+/* ── CANDLES ── */
+.candle-wrap { display: inline-flex; gap: 6px; margin-bottom: .25rem; }
+.candle { position: relative; display: inline-flex; flex-direction: column; align-items: center; cursor: pointer; user-select: none; }
+.flame {
+  font-size: 1.4rem; display: block;
+  animation: flicker .55s ease-in-out infinite alternate;
+  animation-delay: calc(var(--d) * .12s);
+  transform-origin: bottom center;
+  transition: opacity .3s;
+}
+@keyframes flicker {
+  from { transform: scaleY(1) rotate(-3deg); }
+  to   { transform: scaleY(1.15) rotate(3deg); }
+}
+.candle.blown .flame { opacity: 0; transform: scale(0); transition: all .25s ease; }
+.wax { font-size: 1.6rem; }
 
-  /* THEME PICKER */
-  .theme-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 8px; }
-  .theme-btn {
-    padding: 0.7rem 1rem; border-radius: 12px; font-size: 13px; font-weight: 600;
-    cursor: pointer; border: 1.5px solid #e5e7eb; text-align: center;
-    transition: all 0.15s; background: #fafaf9;
-  }
-  .theme-btn:hover, .theme-btn.selected { border-color: var(--rose); transform: scale(1.02); }
-  .theme-btn.selected { background: var(--rose-light); }
+/* blow ring on click */
+.blow-ring {
+  position: absolute;
+  top: 0; left: 50%;
+  width: 40px; height: 40px;
+  transform: translate(-50%, -50%) scale(0);
+  background: radial-gradient(circle, rgba(255,255,255,.9) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+  animation: blowOut .5s ease-out forwards;
+}
+@keyframes blowOut {
+  0%   { transform: translate(-50%,-50%) scale(0); opacity: 1; }
+  100% { transform: translate(-50%,-50%) scale(3.5); opacity: 0; }
+}
 
-  /* DELIVERY TOGGLE */
-  .toggle-row { display: flex; gap: 10px; }
-  .toggle-opt {
-    flex: 1; padding: 0.65rem; border-radius: 12px; border: 1.5px solid #e5e7eb;
-    text-align: center; cursor: pointer; font-size: 14px; font-weight: 600;
-    transition: all 0.15s; background: #fafaf9;
-  }
-  .toggle-opt.selected { background: var(--plum-light); border-color: var(--plum); color: var(--plum); }
+/* ── WISH INPUT ── */
+.wish-area {
+  width: 100%;
+  border: 2px solid #fde68a;
+  border-radius: 1rem;
+  padding: .75rem 1rem;
+  font-family: 'Dancing Script', cursive;
+  font-size: 1.2rem;
+  color: #92400e;
+  background: rgba(255,251,235,.8);
+  resize: none;
+  outline: none;
+  transition: border-color .2s;
+  min-height: 90px;
+}
+.wish-area:focus { border-color: #f59e0b; background: rgba(255,251,235,1); }
+.wish-area::placeholder { color: #d97706; opacity: .55; font-family: 'Quicksand', sans-serif; font-size:.9rem; }
 
-  /* WISH PREVIEW */
-  .wish-preview {
-    border-radius: 20px; padding: 1.5rem;
-    border: 1.5px dashed #fcd34d;
-    text-align: center; margin: 1rem 0;
-    position: relative; overflow: hidden;
-  }
-  .wish-preview::before {
-    content: ''; position: absolute; inset: 0;
-    background: linear-gradient(135deg, rgba(255,228,230,0.5), rgba(254,243,199,0.5));
-    z-index: 0;
-  }
-  .wish-preview > * { position: relative; z-index: 1; }
+/* ── BOTTLE / SEAL ── */
+.bottle-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .5rem;
+  background: linear-gradient(135deg, #fffbeb, #fef3c7);
+  border: 2px dashed #fcd34d;
+  border-radius: 1.25rem;
+  padding: 1rem 1.25rem;
+  margin: 1.25rem 0;
+  cursor: pointer;
+  transition: transform .2s, border-color .2s;
+}
+.bottle-wrap:hover { transform: scale(1.03); border-color: #f59e0b; }
+.bottle-emoji { font-size: 2.5rem; transition: transform .5s cubic-bezier(.34,1.56,.64,1); }
+.bottle-wrap:hover .bottle-emoji { transform: rotate(15deg) scale(1.1); }
 
-  /* CANDLE ANIMATION */
-  .candle-row { display: flex; gap: 6px; justify-content: center; margin-bottom: 4px; }
-  @keyframes flicker {
-    0%,100% { transform: scaleY(1) rotate(-3deg); }
-    50% { transform: scaleY(1.25) rotate(3deg); }
-  }
-  .flame {
-    display: inline-block; font-size: 18px;
-    animation: flicker 0.7s ease-in-out infinite;
-    animation-delay: calc(var(--d)*0.18s);
-  }
+/* ── BLOW INTERACTION ── */
+.mic-btn {
+  display: flex; align-items: center; gap: .5rem;
+  background: linear-gradient(135deg, #f59e0b, #fbbf24);
+  color: white;
+  border: none; cursor: pointer;
+  padding: .8rem 1.6rem;
+  border-radius: 1.5rem;
+  font-family: 'Quicksand', sans-serif;
+  font-weight: 700; font-size: 1rem;
+  box-shadow: 0 4px 12px rgba(245,158,11,.4);
+  transition: transform .15s, box-shadow .15s;
+}
+.mic-btn:active { transform: scale(.95); box-shadow: 0 2px 6px rgba(245,158,11,.3); }
+.mic-btn.listening { background: linear-gradient(135deg, #ef4444, #f97316); animation: breathe 1s ease-in-out infinite; }
+@keyframes breathe { 0%,100%{transform:scale(1)} 50%{transform:scale(1.04)} }
 
-  /* CONFETTI BURST */
-  .confetti-piece {
-    position: fixed; width: 8px; height: 8px; border-radius: 2px;
-    pointer-events: none; z-index: 1000;
-    animation: confFall linear forwards;
-  }
-  @keyframes confFall {
-    0% { transform: translateY(0) rotate(0deg) scale(1); opacity: 1; }
-    100% { transform: translateY(90vh) rotate(720deg) scale(0.5); opacity: 0; }
-  }
+.volume-bar {
+  height: 6px;
+  background: linear-gradient(90deg, #10b981, #f59e0b, #ef4444);
+  border-radius: 3px;
+  width: 0%;
+  transition: width .1s;
+}
 
-  /* NO BTN PLAYFUL */
-  #no-btn {
-    transition: font-size 0.2s, padding 0.2s;
-    position: relative;
-  }
+/* ── CONFETTI ── */
+.confetti-piece {
+  position: fixed;
+  pointer-events: none;
+  z-index: 999;
+  font-size: 1.5rem;
+  animation: confettiFall linear forwards;
+}
+@keyframes confettiFall {
+  0%   { opacity: 1; transform: translateY(-10vh) rotate(0deg) scale(1); }
+  100% { opacity: 0; transform: translateY(110vh) rotate(720deg) scale(.5); }
+}
 
-  /* SUCCESS CARD */
-  .star-ring { font-size: 3rem; animation: spinBounce 1s ease-out; }
-  @keyframes spinBounce {
-    0% { transform: scale(0) rotate(-180deg); }
-    70% { transform: scale(1.2) rotate(10deg); }
-    100% { transform: scale(1) rotate(0deg); }
-  }
+/* ── FINAL CARD STAR ── */
+.star-shine { animation: shine 2s ease-in-out infinite; }
+@keyframes shine { 0%,100%{filter:brightness(1)} 50%{filter:brightness(1.4) drop-shadow(0 0 10px gold)} }
 
-  /* MOBILE */
-  @media (max-width: 480px) {
-    .card { padding: 1.5rem 1.25rem; }
-    .emoji-grid { grid-template-columns: repeat(5,1fr); }
-  }
+/* ── PROGRESS BAR ── */
+.progress-track { background: #fde68a; height: 6px; border-radius: 3px; overflow: hidden; }
+.progress-fill  { height: 100%; background: linear-gradient(90deg,#f59e0b,#fbbf24); border-radius: 3px; transition: width 1s ease; }
 
-  /* CHAR COUNTER */
-  .char-count { text-align: right; font-size: 12px; color: #9ca3af; margin-top: 4px; }
-  .char-count.warn { color: var(--rose); }
+/* ── RESPONSIVE TWEAKS ── */
+@media(max-width:400px) {
+  .card { padding: 1.5rem 1.25rem; }
+  .flame { font-size: 1.2rem; }
+  .wax   { font-size: 1.4rem; }
+}
 </style>
 </head>
 <body>
 
-<div id="particles"></div>
+<div id="bg-floats" class="fixed inset-0 pointer-events-none" style="z-index:1"></div>
 
-<div id="app">
-
-  <!-- STEP DOTS & PROGRESS (shared) -->
-  <div id="progress-wrap" style="margin-bottom: 0;">
-    <div class="step-dots" id="step-dots">
-      <div class="dot" id="d0"></div>
-      <div class="dot" id="d1"></div>
-      <div class="dot" id="d2"></div>
-      <div class="dot" id="d3"></div>
-      <div class="dot" id="d4"></div>
-      <div class="dot" id="d5"></div>
-    </div>
-    <div class="progress-track"><div class="progress-fill" id="prog-fill" style="width:0%"></div></div>
+<!-- ══════════════════════════════ LOADER ══════════════════════════════ -->
+<div id="s0" class="card" style="text-align:center">
+  <div class="pulse-cake">🎂</div>
+  <h2 class="text-xl font-bold text-amber-600 mt-4">Baking the cake...</h2>
+  <div class="progress-track mt-6">
+    <div id="loader-fill" class="progress-fill" style="width:0%"></div>
   </div>
+  <p id="loader-status" class="text-amber-400 text-xs mt-3 uppercase tracking-widest">Preheating the oven</p>
+</div>
 
-  <!-- ── STEP 0: LOADER ── -->
-  <div class="card" id="s0">
-    <div style="text-align:center; padding: 1rem 0;">
-      <div style="font-size:4rem; animation: spinBounce 0.8s ease-out forwards;">🎂</div>
-      <h2 class="serif" style="color:#e11d48; margin:1rem 0 0.5rem; font-size:1.4rem; font-weight:600;">Getting things ready…</h2>
-      <div class="progress-track" style="margin-top:1.5rem;">
-        <div class="progress-fill" id="loader-fill" style="width:0%; transition: width 2.5s ease-in-out;"></div>
-      </div>
-      <p style="font-size:12px; color:#9ca3af; margin-top:0.5rem; text-transform:uppercase; letter-spacing:0.08em;" id="loader-text">Lighting the candles…</p>
-    </div>
+<!-- ══════════════════════════════ STEP 1 · Welcome ══════════════════════════════ -->
+<div id="s1" class="card hidden fade-in" style="text-align:center">
+  <div class="step-dots" id="dots1"></div>
+  <div class="text-5xl mb-3">🎉</div>
+  <h1 class="text-3xl font-bold text-gray-800 mb-1">
+    Hey <span id="to-name" class="script text-amber-500" style="font-size:2.2rem">Star</span>!
+  </h1>
+  <p class="text-gray-500 text-sm leading-relaxed mt-3 mb-6">
+    Today is entirely yours — your laughter, your glow, your wild beautiful dreams. The universe arranged every star just to celebrate you. Ready to begin?
+  </p>
+  <button id="s1-next" class="w-full bg-amber-400 hover:bg-amber-500 active:scale-95 text-white py-3 rounded-2xl font-bold text-lg shadow-md transition-all">
+    Let's Go! 🚀
+  </button>
+  <p class="mt-4 text-xs text-gray-400 italic">A surprise from <span id="from-name">Someone special</span></p>
+</div>
+
+<!-- ══════════════════════════════ STEP 2 · Write Wish ══════════════════════════════ -->
+<div id="s2" class="card hidden fade-in" style="text-align:center">
+  <div class="step-dots" id="dots2"></div>
+  <div class="text-4xl mb-2">✍️</div>
+  <h2 class="text-2xl font-bold text-gray-800 mb-1">Write Your Wish</h2>
+  <p class="text-gray-500 text-xs mb-4">Think big. The universe is listening.</p>
+  <textarea id="wish-input" class="wish-area" placeholder="Type your deepest birthday wish here..." maxlength="200" rows="4"></textarea>
+  <div class="flex justify-between items-center mt-1 mb-5 px-1">
+    <span class="text-xs text-gray-400">Be specific. Be bold.</span>
+    <span id="char-count" class="text-xs text-amber-400 font-bold">0 / 200</span>
   </div>
+  <button id="s2-next" class="w-full bg-amber-400 hover:bg-amber-500 active:scale-95 text-white py-3 rounded-2xl font-bold text-lg shadow-md transition-all disabled:opacity-40 disabled:cursor-not-allowed" disabled>
+    Seal the Wish 🔒
+  </button>
+  <button id="s2-back" class="mt-3 w-full text-amber-400 text-sm font-semibold hover:text-amber-600">← Back</button>
+</div>
 
-  <!-- ── STEP 1: WHO IS IT FOR ── -->
-  <div class="card hidden" id="s1">
-    <div style="font-size:2.5rem; text-align:center; margin-bottom:1rem;">🎁</div>
-    <h2 class="serif" style="font-size:1.5rem; font-weight:600; color:#111; text-align:center; margin:0 0 0.4rem;">Who's celebrating?</h2>
-    <p style="font-size:14px; color:#9ca3af; text-align:center; margin:0 0 1.5rem;">Let's personalise this birthday experience.</p>
-    <div style="display:flex; flex-direction:column; gap:1rem;">
-      <div>
-        <label>Their name 🎂</label>
-        <input type="text" id="to-name" placeholder="e.g. Aisha, Rayan, Sarah…" maxlength="30">
-      </div>
-      <div>
-        <label>Your name</label>
-        <input type="text" id="from-name" placeholder="Your name (or nickname)" maxlength="30">
-      </div>
-      <div>
-        <label>Their relationship to you</label>
-        <select id="relation">
-          <option value="">— pick one —</option>
-          <option value="best friend">Best friend</option>
-          <option value="sibling">Sibling</option>
-          <option value="partner">Partner</option>
-          <option value="parent">Parent</option>
-          <option value="colleague">Colleague</option>
-          <option value="child">Child</option>
-          <option value="cousin">Cousin</option>
-          <option value="other">Someone special</option>
-        </select>
-      </div>
-    </div>
-    <div style="display:flex; gap:10px; margin-top:1.75rem;">
-      <button class="btn btn-primary btn-full" onclick="goTo(2)">Next →</button>
+<!-- ══════════════════════════════ STEP 3 · Seal in Bottle ══════════════════════════════ -->
+<div id="s3" class="card hidden fade-in" style="text-align:center">
+  <div class="step-dots" id="dots3"></div>
+  <div class="text-4xl mb-2">🌊</div>
+  <h2 class="text-2xl font-bold text-gray-800 mb-1">Seal It</h2>
+  <p class="text-gray-500 text-xs mb-4">Your wish is precious. Lock it in a bottle and set it free.</p>
+  <div class="bottle-wrap" id="bottle-btn">
+    <span class="bottle-emoji" id="bottle-emoji">🍾</span>
+    <div style="text-align:left">
+      <p class="font-bold text-amber-700 text-sm">Tap to seal your wish</p>
+      <p id="wish-preview" class="text-amber-500 text-xs italic mt-0.5 truncate" style="max-width:220px"></p>
     </div>
   </div>
+  <div id="sealed-msg" class="hidden text-green-600 font-bold text-sm mb-4 flex items-center justify-center gap-2">
+    <span>✅</span> Wish sealed inside!
+  </div>
+  <button id="s3-next" class="w-full bg-amber-400 hover:bg-amber-500 active:scale-95 text-white py-3 rounded-2xl font-bold text-lg shadow-md transition-all disabled:opacity-40 disabled:cursor-not-allowed" disabled>
+    Blow Out the Candles 🕯️
+  </button>
+  <button id="s3-back" class="mt-3 w-full text-amber-400 text-sm font-semibold hover:text-amber-600">← Back</button>
+</div>
 
-  <!-- ── STEP 2: PICK A THEME ── -->
-  <div class="card hidden" id="s2">
-    <div style="font-size:2.5rem; text-align:center; margin-bottom:1rem;">🎨</div>
-    <h2 class="serif" style="font-size:1.5rem; font-weight:600; color:#111; text-align:center; margin:0 0 0.4rem;">Pick a vibe</h2>
-    <p style="font-size:14px; color:#9ca3af; text-align:center; margin:0 0 1rem;">What mood is this celebration?</p>
-    <div class="theme-grid">
-      <div class="theme-btn" data-theme="romantic" onclick="pickTheme(this)" style="background: linear-gradient(135deg,#fff0f3,#ffe4e6);">💕 Romantic</div>
-      <div class="theme-btn" data-theme="fun" onclick="pickTheme(this)" style="background: linear-gradient(135deg,#fef9c3,#fef3c7);">🎉 Super Fun</div>
-      <div class="theme-btn" data-theme="heartfelt" onclick="pickTheme(this)" style="background: linear-gradient(135deg,#ede9fe,#ddd6fe);">💜 Heartfelt</div>
-      <div class="theme-btn" data-theme="funny" onclick="pickTheme(this)" style="background: linear-gradient(135deg,#dcfce7,#bbf7d0);">😂 Funny</div>
-      <div class="theme-btn" data-theme="poetic" onclick="pickTheme(this)" style="background: linear-gradient(135deg,#e0f2fe,#bae6fd);">🌙 Poetic</div>
-      <div class="theme-btn" data-theme="adventurous" onclick="pickTheme(this)" style="background: linear-gradient(135deg,#fff7ed,#fed7aa);">🔥 Bold & Brave</div>
+<!-- ══════════════════════════════ STEP 4 · Blow Candles ══════════════════════════════ -->
+<div id="s4" class="card hidden fade-in" style="text-align:center">
+  <div class="step-dots" id="dots4"></div>
+  <h2 class="text-2xl font-bold text-gray-800 mb-1">Blow the Candles!</h2>
+  <p class="text-gray-500 text-xs mb-5">Tap each candle to blow it out — or use the mic to blow for real!</p>
+
+  <div class="candle-wrap" id="candle-row"></div>
+
+  <p id="candles-left" class="text-amber-500 font-semibold text-sm mt-3 mb-5">5 candles burning...</p>
+
+  <!-- Mic blow -->
+  <div class="bg-amber-50 rounded-2xl p-4 mb-5">
+    <p class="text-xs text-gray-500 mb-3">🎤 Or blow into your mic!</p>
+    <button id="mic-btn" class="mic-btn mx-auto">
+      <span>🎤</span> Hold to Blow
+    </button>
+    <div class="progress-track mt-3">
+      <div id="vol-bar" class="volume-bar"></div>
     </div>
-    <div style="display:flex; gap:10px; margin-top:1.75rem;">
-      <button class="btn btn-ghost" onclick="goTo(1)">← Back</button>
-      <button class="btn btn-primary btn-full" onclick="goTo(3)">Next →</button>
-    </div>
+    <p id="mic-hint" class="text-xs text-gray-400 mt-2">Hold the button and blow into your mic</p>
   </div>
 
-  <!-- ── STEP 3: CRAFT YOUR WISH ── -->
-  <div class="card hidden" id="s3">
-    <div style="font-size:2.5rem; text-align:center; margin-bottom:1rem;">✍️</div>
-    <h2 class="serif" style="font-size:1.5rem; font-weight:600; color:#111; text-align:center; margin:0 0 0.4rem;">Write your wish</h2>
-    <p style="font-size:14px; color:#9ca3af; text-align:center; margin:0 0 1rem;">Speak from the heart — this is the part they'll remember.</p>
+  <button id="s4-next" class="w-full bg-amber-400 hover:bg-amber-500 active:scale-95 text-white py-3 rounded-2xl font-bold text-lg shadow-md transition-all disabled:opacity-40 disabled:cursor-not-allowed" disabled>
+    Make It Official ✨
+  </button>
+  <button id="s4-back" class="mt-3 w-full text-amber-400 text-sm font-semibold hover:text-amber-600">← Back</button>
+</div>
 
-    <div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:1rem;" id="starter-chips"></div>
-
-    <div>
-      <label>Your message <span id="word-theme-tag" style="font-style:italic; font-weight:400; color:#f59e0b;"></span></label>
-      <textarea id="wish-text" maxlength="280" placeholder="Type your wish here…"></textarea>
-      <div class="char-count" id="char-count">0 / 280</div>
-    </div>
-
-    <div style="margin-top:1rem;">
-      <label>Pick a signature emoji 🌟</label>
-      <div class="emoji-grid" id="emoji-grid"></div>
-    </div>
-    <div style="display:flex; gap:10px; margin-top:1.75rem;">
-      <button class="btn btn-ghost" onclick="goTo(2)">← Back</button>
-      <button class="btn btn-primary btn-full" onclick="goTo(4)">Preview →</button>
-    </div>
+<!-- ══════════════════════════════ STEP 5 · Celebration ══════════════════════════════ -->
+<div id="s5" class="card hidden fade-in" style="text-align:center">
+  <div class="text-6xl star-shine mb-3">🥳</div>
+  <h1 class="script text-amber-500 mb-2" style="font-size:2.8rem">It's Official!</h1>
+  <p class="text-gray-600 text-sm leading-relaxed mb-5">
+    The candles are out, the wish is sealed, and the universe is already working on it. May this be your most magical year yet! 🌟
+  </p>
+  <div class="bg-gradient-to-br from-amber-50 to-pink-50 rounded-2xl p-4 mb-5 border border-amber-100">
+    <p class="text-xs text-gray-400 uppercase tracking-widest mb-2">Your Wish</p>
+    <p id="final-wish" class="script text-amber-600 text-xl leading-snug">...</p>
   </div>
-
-  <!-- ── STEP 4: PREVIEW ── -->
-  <div class="card hidden" id="s4">
-    <div style="font-size:2.5rem; text-align:center; margin-bottom:0.5rem;">👀</div>
-    <h2 class="serif" style="font-size:1.5rem; font-weight:600; color:#111; text-align:center; margin:0 0 1rem;">Preview your card</h2>
-
-    <div class="wish-preview" id="preview-card">
-      <div class="candle-row">
-        <span class="flame" style="--d:0">🕯️</span>
-        <span class="flame" style="--d:1">🕯️</span>
-        <span class="flame" style="--d:2">🕯️</span>
-      </div>
-      <div style="font-size:3rem; margin: 6px 0;">🎂</div>
-      <h3 class="serif" style="font-size:1.6rem; font-weight:600; color:#e11d48; margin: 0 0 0.5rem;" id="preview-title">Happy Birthday!</h3>
-      <p style="font-size:14px; color:#374151; line-height:1.7; margin:0 0 1rem;" id="preview-msg"></p>
-      <div id="preview-emoji" style="font-size:1.5rem; margin-bottom:0.5rem;"></div>
-      <p style="font-size:12px; color:#9ca3af; margin:0;">— <span id="preview-from"></span></p>
-    </div>
-
-    <div style="display:flex; flex-direction:column; gap:1rem; margin-top:0.5rem;">
-      <label style="margin-bottom:0;">Send as…</label>
-      <div class="toggle-row" id="delivery-toggle">
-        <div class="toggle-opt selected" data-mode="link" onclick="pickDelivery(this)">🔗 Share link</div>
-        <div class="toggle-opt" data-mode="copy" onclick="pickDelivery(this)">📋 Copy text</div>
-        <div class="toggle-opt" data-mode="whatsapp" onclick="pickDelivery(this)">💬 WhatsApp</div>
-      </div>
-    </div>
-
-    <div style="display:flex; gap:10px; margin-top:1.75rem;">
-      <button class="btn btn-ghost" onclick="goTo(3)">← Edit</button>
-      <button class="btn btn-gold btn-full" onclick="sendWish()">Send it! 🎉</button>
-    </div>
+  <div class="flex gap-3 flex-col sm:flex-row">
+    <button id="share-btn" class="flex-1 bg-pink-400 hover:bg-pink-500 active:scale-95 text-white py-3 rounded-2xl font-bold text-sm shadow-md transition-all">
+      📸 Share Your Wish
+    </button>
+    <button onclick="location.reload()" class="flex-1 bg-white border-2 border-amber-200 text-amber-500 py-3 rounded-2xl font-bold text-sm hover:border-amber-400 transition-all">
+      🔄 Start Over
+    </button>
   </div>
-
-  <!-- ── STEP 5: BLOW CANDLES ── -->
-  <div class="card hidden" id="s5">
-    <div style="text-align:center;">
-      <div class="candle-row" style="font-size:28px; gap:10px; margin-bottom:4px;" id="big-candles">
-        <span class="flame" style="--d:0">🕯️</span>
-        <span class="flame" style="--d:1">🕯️</span>
-        <span class="flame" style="--d:2">🕯️</span>
-      </div>
-      <div style="font-size:5rem; margin: 4px 0; filter: drop-shadow(0 4px 10px rgba(245,158,11,0.4));">🎂</div>
-      <h2 class="serif" style="font-size:1.6rem; font-weight:600; color:#111; margin: 0.5rem 0 0.4rem;" id="blow-title">Ready, <span id="blow-name"></span>?</h2>
-      <p style="font-size:14px; color:#6b7280; margin: 0 0 1.5rem;" id="wish-text-display"></p>
-      <p style="font-size:13px; color:#9ca3af; margin-bottom:1.5rem;">Make a secret wish in your heart…</p>
-
-      <div style="display:flex; flex-direction:column; gap:10px; align-items:center;">
-        <button id="yes-btn" class="btn btn-primary btn-full" onclick="makeWish()" style="font-size:1.05rem; padding:1rem 2rem;">
-          🌬️ Blow out the candles!
-        </button>
-        <button id="no-btn" class="btn btn-ghost" onclick="nudgeNoBtn()" style="font-size:14px;">Not yet…</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- ── STEP 6: CELEBRATION ── -->
-  <div class="card hidden" id="s6">
-    <div style="text-align:center; padding: 0.5rem 0;">
-      <div class="star-ring">🥳</div>
-      <h1 class="serif" style="font-size:2.2rem; font-weight:600; color:#e11d48; margin:0.75rem 0 0.4rem;">Wish made!</h1>
-      <p style="font-size:14px; color:#6b7280; margin:0 0 1.5rem; line-height:1.7;">
-        The universe just heard you — and so did <strong id="cel-name"></strong>. May every dream you sealed in that flame become real this year.
-      </p>
-      <div style="background:var(--gold-light); border-radius:16px; padding:1.25rem; margin-bottom:1.5rem; border:1.5px dashed #fcd34d;">
-        <p class="serif" style="font-style:italic; color:#92400e; font-size:1.05rem; margin:0;" id="cel-quote"></p>
-      </div>
-      <div id="cel-emojis" style="font-size:2rem; letter-spacing:4px; margin-bottom:1.5rem;"></div>
-      <div style="display:flex; gap:10px;">
-        <button class="btn btn-ghost btn-full" onclick="location.reload()">🔄 Make another</button>
-        <button class="btn btn-primary btn-full" onclick="celebrateAgain()">🎊 Celebrate again!</button>
-      </div>
-    </div>
-  </div>
-
-</div><!-- /app -->
+  <button id="export-btn" class="mt-3 w-full bg-gradient-to-r from-amber-400 to-pink-400 hover:from-amber-500 hover:to-pink-500 active:scale-95 text-white py-3 rounded-2xl font-bold text-sm shadow-md transition-all flex items-center justify-center gap-2">
+    <span>🖼️</span> Save to Gallery
+  </button>
+  <!-- hidden canvas for export -->
+  <canvas id="export-canvas" style="display:none"></canvas>
+  <p class="mt-5 text-xs text-gray-400 italic">Happy Birthday from <span id="from-name-final">Someone special</span> 🎂</p>
+</div>
 
 <script>
-// ── STATE ──
-const state = {
-  to: '', from: '', relation: '',
-  theme: '', wish: '', emoji: '🌟',
-  delivery: 'link', currentStep: 0
-};
+// ── CONFIG ──────────────────────────────────────────────
+const TOTAL_STEPS = 5; // loader = 0, steps 1-5
+const CANDLE_COUNT = 5;
+const EMOJIS_BG = ['🎈','🎉','✨','🎊','⭐','🌟','🍰','🎁'];
 
-const TOTAL_STEPS = 6;
-const EMOJIS = ['🌟','💖','🎉','✨','🎂','🥂','🌺','🎈','💫','🦋','🌈','🔥'];
+// ── URL PARAMS ──────────────────────────────────────────
+const params = new URLSearchParams(location.search);
+const TO   = params.get('to')   || 'Star';
+const FROM = params.get('from') || 'Someone Special';
+document.querySelectorAll('#to-name').forEach(el => el.textContent = TO);
+document.querySelectorAll('#from-name, #from-name-final').forEach(el => el.textContent = FROM);
 
-const STARTERS = {
-  romantic: ["You mean the world to me", "Every day with you is a gift", "My heart is fuller because of you"],
-  fun: ["Party time! 🥳", "You're officially another year awesome", "Today's forecast: 100% cake and happiness"],
-  heartfelt: ["Watching you grow has been my greatest joy", "You make every room brighter", "I'm so proud of who you've become"],
-  funny: ["Congratulations on surviving another trip around the sun", "Age is just a number, but yours is getting big", "You're not old, you're vintage"],
-  poetic: ["May the stars carry your wishes skyward", "Another chapter begins today, write it beautifully", "You are made of stardust and wonder"],
-  adventurous: ["The best is yet to come — go claim it", "This year, dream bigger and dare harder", "Here's to the bold choices ahead of you"]
-};
+// ── STATE ───────────────────────────────────────────────
+let wish = '';
+let candlesBlown = 0;
+let sealed = false;
+let audioCtx = null, analyser = null, micStream = null, micActive = false, micTimer = null;
 
-const QUOTES = {
-  romantic: "\"Where there is love, there is life.\"",
-  fun: "\"Life is short — eat the cake first.\"",
-  heartfelt: "\"The most precious gift we can offer anyone is our attention.\"",
-  funny: "\"Age is an issue of mind over matter. If you don't mind, it doesn't matter.\"",
-  poetic: "\"We are all made of stardust.\"",
-  adventurous: "\"The biggest adventure you can take is to live the life of your dreams.\""
-};
-
-// ── PARTICLES ──
-function spawnParticle() {
-  const p = document.createElement('div');
-  p.className = 'particle';
-  const size = Math.random()*14+6;
-  const colors = ['#fcd34d','#fca5a5','#a5b4fc','#6ee7b7','#f9a8d4','#fde68a'];
-  p.style.cssText = `left:${Math.random()*100}vw; width:${size}px; height:${size}px; background:${colors[Math.floor(Math.random()*colors.length)]}; animation-duration:${Math.random()*4+4}s; opacity:0.5;`;
-  document.getElementById('particles').appendChild(p);
-  setTimeout(()=>p.remove(), 8000);
+// ── FLOATING ITEMS ──────────────────────────────────────
+function spawnFloat(intense = false) {
+  const el = document.createElement('div');
+  el.className = 'float';
+  el.textContent = EMOJIS_BG[Math.floor(Math.random() * EMOJIS_BG.length)];
+  el.style.left = Math.random() * 100 + 'vw';
+  el.style.fontSize = (Math.random() * 14 + 12) + 'px';
+  el.style.animationDuration = (Math.random() * 2 + (intense ? 2 : 3.5)) + 's';
+  document.getElementById('bg-floats').appendChild(el);
+  setTimeout(() => el.remove(), 5000);
 }
-setInterval(spawnParticle, 350);
+setInterval(spawnFloat, 320);
 
-// ── LOADER ──
-window.addEventListener('load', ()=>{
-  updateProgress(-1);
-  const fill = document.getElementById('loader-fill');
-  const txt = document.getElementById('loader-text');
-  setTimeout(()=>{ fill.style.width='100%'; },100);
-  setTimeout(()=>{ txt.textContent='Candles lit! ✨ Let\'s go'; },1600);
-  setTimeout(()=>{ transition(0,1); },3200);
+// ── STEP DOTS ──────────────────────────────────────────
+function renderDots(containerId, currentStep) {
+  const c = document.getElementById(containerId);
+  if (!c) return;
+  c.innerHTML = '';
+  for (let i = 1; i <= 4; i++) {
+    const d = document.createElement('div');
+    d.className = 'dot' + (i < currentStep ? ' done' : i === currentStep ? ' active' : '');
+    c.appendChild(d);
+  }
+}
+
+// ── CARD TRANSITION ─────────────────────────────────────
+function goTo(fromId, toId, dotStep) {
+  const from = document.getElementById(fromId);
+  const to   = document.getElementById(toId);
+  from.classList.add('fade-out');
+  setTimeout(() => {
+    from.classList.add('hidden');
+    from.classList.remove('fade-out','visible');
+    to.classList.remove('hidden');
+    to.classList.add('fade-in');
+    renderDots('dots' + dotStep, dotStep);
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      to.classList.remove('fade-in');
+      to.classList.add('visible');
+    }));
+  }, 420);
+}
+
+// ── LOADER ──────────────────────────────────────────────
+const loaderFill   = document.getElementById('loader-fill');
+const loaderStatus = document.getElementById('loader-status');
+const loaderStages = [
+  [15, 'Preheating the oven...'],
+  [40, 'Mixing the batter...'],
+  [65, 'Baking the layers...'],
+  [85, 'Frosting the cake...'],
+  [100,'Lighting the candles! 🕯️'],
+];
+let stageIdx = 0;
+window.addEventListener('load', () => {
+  const tick = () => {
+    if (stageIdx >= loaderStages.length) return;
+    const [w, msg] = loaderStages[stageIdx++];
+    loaderFill.style.width = w + '%';
+    loaderStatus.textContent = msg;
+    if (stageIdx < loaderStages.length) setTimeout(tick, 700);
+  };
+  setTimeout(tick, 400);
+  setTimeout(() => {
+    const s0 = document.getElementById('s0');
+    s0.classList.add('fade-out');
+    setTimeout(() => {
+      s0.classList.add('hidden');
+      const s1 = document.getElementById('s1');
+      s1.classList.remove('hidden');
+      s1.classList.add('fade-in');
+      renderDots('dots1', 1);
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        s1.classList.remove('fade-in');
+        s1.classList.add('visible');
+      }));
+    }, 450);
+  }, 4200);
 });
 
-// ── NAVIGATION ──
-function goTo(step) {
-  if(!validateStep(state.currentStep)) return;
-  collectStep(state.currentStep);
-  transition(state.currentStep, step);
-}
+// ── STEP 1 → 2 ──────────────────────────────────────────
+document.getElementById('s1-next').addEventListener('click', () => goTo('s1','s2',2));
+document.getElementById('s2-back').addEventListener('click', () => goTo('s2','s1',1));
 
-function transition(from, to) {
-  const fromEl = document.getElementById('s'+from);
-  const toEl   = document.getElementById('s'+to);
-  fromEl.classList.add('fade-out');
-  setTimeout(()=>{
-    fromEl.classList.add('hidden');
-    fromEl.classList.remove('fade-out');
-    toEl.classList.remove('hidden');
-    toEl.classList.add('fade-in');
-    setTimeout(()=>toEl.classList.remove('fade-in'), 500);
-    state.currentStep = to;
-    updateProgress(to);
-    if(to === 3) buildStep3();
-    if(to === 4) buildPreview();
-    if(to === 5) buildBlowStep();
-  }, 350);
-}
+// ── WISH INPUT ──────────────────────────────────────────
+const wishInput = document.getElementById('wish-input');
+const charCount = document.getElementById('char-count');
+const s2Next    = document.getElementById('s2-next');
+wishInput.addEventListener('input', () => {
+  const len = wishInput.value.trim().length;
+  charCount.textContent = wishInput.value.length + ' / 200';
+  s2Next.disabled = len < 3;
+});
 
-function updateProgress(step) {
-  const pct = step <= 0 ? 0 : Math.round((step / TOTAL_STEPS)*100);
-  document.getElementById('prog-fill').style.width = pct+'%';
-  for(let i=0;i<TOTAL_STEPS;i++){
-    const d = document.getElementById('d'+i);
-    if(!d) continue;
-    d.className = 'dot' + (i < step ? ' done' : i===step ? ' active' : '');
+// ── STEP 2 → 3 ──────────────────────────────────────────
+document.getElementById('s2-next').addEventListener('click', () => {
+  wish = wishInput.value.trim();
+  document.getElementById('wish-preview').textContent = '"' + wish.substring(0, 60) + (wish.length > 60 ? '…' : '') + '"';
+  goTo('s2','s3',3);
+});
+document.getElementById('s3-back').addEventListener('click', () => goTo('s3','s2',2));
+
+// ── SEAL BOTTLE ──────────────────────────────────────────
+const bottleBtn  = document.getElementById('bottle-btn');
+const bottleEmoji = document.getElementById('bottle-emoji');
+const sealedMsg  = document.getElementById('sealed-msg');
+const s3Next     = document.getElementById('s3-next');
+bottleBtn.addEventListener('click', () => {
+  if (sealed) return;
+  sealed = true;
+  bottleEmoji.style.transition = 'transform .6s cubic-bezier(.34,1.56,.64,1), filter .4s';
+  bottleEmoji.style.transform = 'rotate(25deg) scale(1.25)';
+  bottleEmoji.style.filter = 'drop-shadow(0 0 10px gold)';
+  bottleEmoji.textContent = '🔒';
+  setTimeout(() => {
+    bottleEmoji.style.transform = 'scale(1) rotate(0deg)';
+    sealedMsg.classList.remove('hidden');
+    sealedMsg.style.display = 'flex';
+    bottleBtn.style.borderColor = '#10b981';
+    bottleBtn.style.borderStyle = 'solid';
+    s3Next.disabled = false;
+    // mini confetti burst
+    for (let i=0; i<20; i++) setTimeout(() => spawnFloat(true), i*80);
+  }, 600);
+});
+
+// ── STEP 3 → 4 ──────────────────────────────────────────
+document.getElementById('s3-next').addEventListener('click', () => {
+  buildCandles();
+  goTo('s3','s4',4);
+});
+document.getElementById('s4-back').addEventListener('click', () => {
+  sealed = false;
+  bottleEmoji.textContent = '🍾';
+  bottleEmoji.style.transform = '';
+  bottleEmoji.style.filter = '';
+  bottleBtn.style.borderColor = '';
+  bottleBtn.style.borderStyle = 'dashed';
+  sealedMsg.classList.add('hidden');
+  s3Next.disabled = true;
+  goTo('s4','s3',3);
+});
+
+// ── CANDLES ─────────────────────────────────────────────
+function buildCandles() {
+  candlesBlown = 0;
+  const row = document.getElementById('candle-row');
+  row.innerHTML = '';
+  for (let i = 0; i < CANDLE_COUNT; i++) {
+    const c = document.createElement('div');
+    c.className = 'candle';
+    c.dataset.i = i;
+    c.innerHTML = `<span class="flame" style="--d:${i}">🔥</span><span class="wax">🕯️</span>`;
+    c.addEventListener('click', () => blowCandle(c));
+    c.addEventListener('touchstart', e => { e.preventDefault(); blowCandle(c); }, {passive:false});
+    row.appendChild(c);
   }
+  updateCandleLabel();
+  document.getElementById('s4-next').disabled = true;
 }
 
-function validateStep(step) {
-  if(step===1){
-    const to = document.getElementById('to-name').value.trim();
-    const rel = document.getElementById('relation').value;
-    if(!to){ shake('to-name'); return false; }
-    if(!rel){ shake('relation'); return false; }
-  }
-  if(step===2 && !state.theme){ alert('Pick a vibe first! 🎨'); return false; }
-  if(step===3){
-    const w = document.getElementById('wish-text').value.trim();
-    if(w.length < 5){ shake('wish-text'); return false; }
-  }
-  return true;
+function blowCandle(candle) {
+  if (candle.classList.contains('blown')) return;
+  candle.classList.add('blown');
+  // blow ring
+  const ring = document.createElement('div');
+  ring.className = 'blow-ring';
+  candle.appendChild(ring);
+  setTimeout(() => ring.remove(), 600);
+  candlesBlown++;
+  updateCandleLabel();
+  spawnFloat(true);
 }
 
-function collectStep(step) {
-  if(step===1){
-    state.to = document.getElementById('to-name').value.trim() || 'Star';
-    state.from = document.getElementById('from-name').value.trim() || 'Someone special';
-    state.relation = document.getElementById('relation').value;
-  }
-  if(step===3){
-    state.wish = document.getElementById('wish-text').value.trim();
-  }
-}
-
-function shake(id) {
-  const el = document.getElementById(id);
-  el.style.borderColor='var(--rose)';
-  el.animate([{transform:'translateX(-6px)'},{transform:'translateX(6px)'},{transform:'translateX(-4px)'},{transform:'translateX(0)'}], {duration:250});
-  setTimeout(()=>el.style.borderColor='', 800);
-}
-
-// ── STEP 2: THEME ──
-function pickTheme(el) {
-  document.querySelectorAll('.theme-btn').forEach(b=>b.classList.remove('selected'));
-  el.classList.add('selected');
-  state.theme = el.dataset.theme;
-}
-
-// ── STEP 3: WISH ──
-function buildStep3() {
-  // starters
-  const chips = document.getElementById('starter-chips');
-  chips.innerHTML = '';
-  (STARTERS[state.theme]||[]).forEach(s=>{
-    const btn = document.createElement('button');
-    btn.className='btn btn-ghost';
-    btn.style.cssText='font-size:12px; padding:5px 12px; border-radius:99px;';
-    btn.textContent = '+ '+s;
-    btn.onclick = ()=>{ document.getElementById('wish-text').value=s; updateCharCount(); };
-    chips.appendChild(btn);
-  });
-  // theme tag
-  const themeLabels = {romantic:'💕 romantic',fun:'🎉 fun',heartfelt:'💜 heartfelt',funny:'😂 funny',poetic:'🌙 poetic',adventurous:'🔥 adventurous'};
-  document.getElementById('word-theme-tag').textContent = '– '+themeLabels[state.theme]||'';
-  // emoji grid
-  const eg = document.getElementById('emoji-grid');
-  eg.innerHTML='';
-  EMOJIS.forEach(e=>{
-    const b=document.createElement('div');
-    b.className='emoji-btn'+(state.emoji===e?' selected':'');
-    b.textContent=e;
-    b.onclick=()=>{ state.emoji=e; eg.querySelectorAll('.emoji-btn').forEach(x=>x.classList.remove('selected')); b.classList.add('selected'); };
-    eg.appendChild(b);
-  });
-  // char counter
-  const ta=document.getElementById('wish-text');
-  ta.value=state.wish||'';
-  updateCharCount();
-  ta.addEventListener('input', updateCharCount);
-}
-
-function updateCharCount() {
-  const v=document.getElementById('wish-text').value.length;
-  const el=document.getElementById('char-count');
-  el.textContent=v+' / 280';
-  el.className='char-count'+(v>240?' warn':'');
-}
-
-// ── STEP 4: PREVIEW ──
-function buildPreview() {
-  collectStep(3);
-  document.getElementById('preview-title').textContent = 'Happy Birthday, '+state.to+'!';
-  document.getElementById('preview-msg').textContent  = state.wish;
-  document.getElementById('preview-emoji').textContent= state.emoji+' '+state.emoji+' '+state.emoji;
-  document.getElementById('preview-from').textContent = 'With love, '+state.from;
-}
-
-function pickDelivery(el) {
-  document.querySelectorAll('.toggle-opt').forEach(o=>o.classList.remove('selected'));
-  el.classList.add('selected');
-  state.delivery = el.dataset.mode;
-}
-
-function sendWish() {
-  const msg = `🎂 Happy Birthday, ${state.to}!\n\n${state.wish}\n\n${state.emoji} — ${state.from}`;
-  if(state.delivery==='copy'){
-    navigator.clipboard.writeText(msg).then(()=>{
-      const btn = document.querySelector('#s4 .btn-gold');
-      btn.textContent='✅ Copied!';
-      setTimeout(()=>btn.textContent='Send it! 🎉',2000);
-    });
-  } else if(state.delivery==='whatsapp'){
-    window.open('https://wa.me/?text='+encodeURIComponent(msg),'_blank');
+function updateCandleLabel() {
+  const left = CANDLE_COUNT - candlesBlown;
+  const lbl = document.getElementById('candles-left');
+  if (left === 0) {
+    lbl.textContent = '🎉 All candles out!';
+    lbl.style.color = '#10b981';
+    document.getElementById('s4-next').disabled = false;
   } else {
-    const url = `${location.origin}${location.pathname}?to=${encodeURIComponent(state.to)}&from=${encodeURIComponent(state.from)}&wish=${encodeURIComponent(state.wish)}&emoji=${encodeURIComponent(state.emoji)}&theme=${state.theme}`;
-    navigator.clipboard.writeText(url).then(()=>{
-      const btn = document.querySelector('#s4 .btn-gold');
-      btn.textContent='🔗 Link copied!';
-      setTimeout(()=>btn.textContent='Send it! 🎉',2000);
-    });
+    lbl.textContent = `${left} candle${left>1?'s':''} still burning...`;
+    lbl.style.color = '';
   }
-  // proceed to blow-candles
-  setTimeout(()=>transition(4,5), 600);
 }
 
-// ── STEP 5: BLOW CANDLES ──
-function buildBlowStep() {
-  document.getElementById('blow-name').textContent = state.to;
-  const shortWish = state.wish.length>80 ? state.wish.slice(0,77)+'…' : state.wish;
-  document.getElementById('wish-text-display').textContent = '"'+shortWish+'"';
+// ── MIC BLOW ────────────────────────────────────────────
+const micBtn  = document.getElementById('mic-btn');
+const volBar  = document.getElementById('vol-bar');
+const micHint = document.getElementById('mic-hint');
+
+async function startMic() {
+  try {
+    micStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    audioCtx  = new (window.AudioContext || window.webkitAudioContext)();
+    analyser  = audioCtx.createAnalyser();
+    analyser.fftSize = 256;
+    audioCtx.createMediaStreamSource(micStream).connect(analyser);
+    micActive = true;
+    micBtn.classList.add('listening');
+    micBtn.innerHTML = '<span>💨</span> Blowing...';
+    micHint.textContent = 'Blow hard! Watch the bar fill up.';
+    const buf = new Uint8Array(analyser.frequencyBinCount);
+    micTimer = setInterval(() => {
+      analyser.getByteFrequencyData(buf);
+      const avg = buf.reduce((a,b) => a+b, 0) / buf.length;
+      const pct = Math.min(100, (avg / 40) * 100);
+      volBar.style.width = pct + '%';
+      if (pct > 55) {
+        // blow all remaining candles
+        document.querySelectorAll('.candle:not(.blown)').forEach(c => {
+          setTimeout(() => blowCandle(c), Math.random() * 300);
+        });
+      }
+    }, 80);
+  } catch(e) {
+    micHint.textContent = 'Mic access denied — tap candles instead!';
+  }
 }
 
-let noCount=0;
-const noPhrases=["Not yet…","Still thinking…","Almost! 🤔","The candles are melting! 🕯️","Just blow! 😅","The cake is crying 😢","Okay FINE… wait actually no","Last chance before the frosting melts!","JUST DO IT! 🎉"];
-
-function nudgeNoBtn(){
-  const btn=document.getElementById('no-btn');
-  noCount++;
-  btn.textContent = noPhrases[Math.min(noCount, noPhrases.length-1)];
-  btn.animate([{transform:'rotate(-3deg)'},{transform:'rotate(3deg)'},{transform:'rotate(0)'}],{duration:200});
-  const yes=document.getElementById('yes-btn');
-  const cur=parseFloat(window.getComputedStyle(yes).fontSize);
-  if(cur<28) yes.style.fontSize=(cur+2.5)+'px';
+function stopMic() {
+  if (!micActive) return;
+  clearInterval(micTimer);
+  if (micStream) micStream.getTracks().forEach(t => t.stop());
+  if (audioCtx) audioCtx.close();
+  micActive = false;
+  micBtn.classList.remove('listening');
+  micBtn.innerHTML = '<span>🎤</span> Hold to Blow';
+  volBar.style.width = '0%';
+  micHint.textContent = 'Hold the button and blow into your mic';
 }
 
-function makeWish(){
-  // Blow out candles
-  const cRow=document.getElementById('big-candles');
-  cRow.innerHTML='<span style="font-size:2rem;">💨</span>';
-  setTimeout(()=>{ cRow.innerHTML='🫙🫙🫙'; },600);
-  // Confetti burst
-  confettiBurst();
-  // Transition to success
-  setTimeout(()=>buildCelebration(), 1200);
-  setTimeout(()=>transition(5,6), 1400);
-}
+micBtn.addEventListener('mousedown',  startMic);
+micBtn.addEventListener('touchstart', e => { e.preventDefault(); startMic(); }, {passive:false});
+micBtn.addEventListener('mouseup',    stopMic);
+micBtn.addEventListener('touchend',   stopMic);
+micBtn.addEventListener('mouseleave', stopMic);
 
-function buildCelebration(){
-  document.getElementById('cel-name').textContent = state.to;
-  document.getElementById('cel-quote').textContent = QUOTES[state.theme]||QUOTES.heartfelt;
-  document.getElementById('cel-emojis').textContent = Array(5).fill(state.emoji).join(' ');
-}
+// ── STEP 4 → 5 ──────────────────────────────────────────
+document.getElementById('s4-next').addEventListener('click', () => {
+  document.getElementById('final-wish').textContent = wish;
+  goTo('s4','s5',5);
+  triggerBigConfetti();
+  for (let i=0; i<30; i++) setTimeout(() => spawnFloat(true), i*60);
+});
 
-// ── CONFETTI ──
-function confettiBurst(){
-  const colors=['#e11d48','#f59e0b','#7c3aed','#059669','#3b82f6','#ec4899','#fcd34d'];
-  for(let i=0;i<80;i++){
-    setTimeout(()=>{
-      const c=document.createElement('div');
-      c.className='confetti-piece';
-      c.style.cssText=`left:${Math.random()*100}vw; top:-10px; background:${colors[Math.floor(Math.random()*colors.length)]}; border-radius:${Math.random()>0.5?'50%':'2px'}; animation-duration:${Math.random()*1.5+1}s; animation-delay:0s; width:${Math.random()*8+4}px; height:${Math.random()*8+4}px;`;
+// ── BIG CONFETTI ────────────────────────────────────────
+function triggerBigConfetti() {
+  const pieces = ['🎈','✨','🎊','⭐','🎉','🌟','🍰','🎁','🎀'];
+  for (let i = 0; i < 80; i++) {
+    setTimeout(() => {
+      const c = document.createElement('div');
+      c.className = 'confetti-piece';
+      c.textContent = pieces[Math.floor(Math.random() * pieces.length)];
+      c.style.left   = Math.random() * 100 + 'vw';
+      c.style.top    = '-5vh';
+      c.style.animationDuration = (1.5 + Math.random() * 2) + 's';
+      c.style.animationDelay   = '0s';
       document.body.appendChild(c);
-      setTimeout(()=>c.remove(),3000);
-    },i*25);
+      setTimeout(() => c.remove(), 4000);
+    }, i * 35);
   }
 }
 
-function celebrateAgain(){
-  confettiBurst();
-  // rebuild blow step
-  transition(6,5);
-  setTimeout(buildBlowStep, 400);
-}
+// ── EXPORT TO GALLERY ────────────────────────────────────
+document.getElementById('export-btn').addEventListener('click', () => {
+  const btn = document.getElementById('export-btn');
+  btn.innerHTML = '<span>⏳</span> Generating...';
+  btn.disabled = true;
 
-// ── URL PARAMS (shared link landing) ──
-const p = new URLSearchParams(location.search);
-if(p.get('to')){
-  state.to=p.get('to')||'Star';
-  state.from=p.get('from')||'Someone special';
-  state.wish=p.get('wish')||'Wishing you the most wonderful day!';
-  state.emoji=p.get('emoji')||'🌟';
-  state.theme=p.get('theme')||'heartfelt';
-  // skip to blow candles (step 5)
-  window.addEventListener('load',()=>{
-    setTimeout(()=>{
-      document.getElementById('s0').classList.add('hidden');
-      document.getElementById('s5').classList.remove('hidden');
-      document.getElementById('s5').classList.add('fade-in');
-      state.currentStep=5;
-      updateProgress(5);
-      buildBlowStep();
-    },3400);
+  // Load Dancing Script font first via FontFace API
+  const font = new FontFace('Dancing Script', 'url(https://fonts.gstatic.com/s/dancingscript/v25/If2cXTr6YS-zF4S-kcSWSVi_sxjsohD9F50Ruu7BMSo3Sup5.woff2)');
+  font.load().then(loaded => {
+    document.fonts.add(loaded);
+    drawExportCard();
+  }).catch(() => {
+    drawExportCard(); // fallback even if font load fails
   });
-}
+
+  function drawExportCard() {
+    const W = 900, H = 900;
+    const canvas = document.getElementById('export-canvas');
+    canvas.width  = W;
+    canvas.height = H;
+    const ctx = canvas.getContext('2d');
+
+    // ── Background gradient
+    const bg = ctx.createLinearGradient(0, 0, W, H);
+    bg.addColorStop(0,   '#fef3c7');
+    bg.addColorStop(0.45,'#fde68a');
+    bg.addColorStop(1,   '#fce7f3');
+    ctx.fillStyle = bg;
+    ctx.fillRect(0, 0, W, H);
+
+    // ── Decorative circles (blobs)
+    [[-.1,.1,260,'rgba(251,191,36,.18)'],[1.1,.15,220,'rgba(249,168,212,.2)'],
+     [.5,1.05,200,'rgba(253,230,138,.25)'],[.1,.85,140,'rgba(167,243,208,.18)'],
+     [.9,.8,160,'rgba(252,211,77,.2)']].forEach(([rx,ry,r,c]) => {
+      ctx.beginPath();
+      ctx.arc(rx*W, ry*H, r, 0, Math.PI*2);
+      ctx.fillStyle = c;
+      ctx.fill();
+    });
+
+    // ── Card background (rounded rect)
+    const cx = W/2, cardW = 680, cardH = 700, cardX = cx - cardW/2, cardY = (H - cardH)/2;
+    ctx.save();
+    roundRect(ctx, cardX, cardY, cardW, cardH, 48);
+    ctx.fillStyle = 'rgba(255,255,255,0.82)';
+    ctx.shadowColor = 'rgba(0,0,0,0.12)';
+    ctx.shadowBlur  = 40;
+    ctx.fill();
+    ctx.restore();
+
+    // card border
+    ctx.save();
+    roundRect(ctx, cardX, cardY, cardW, cardH, 48);
+    ctx.strokeStyle = 'rgba(255,255,255,0.9)';
+    ctx.lineWidth = 3;
+    ctx.stroke();
+    ctx.restore();
+
+    // ── Emoji decorations scattered around card edges
+    const decos = [
+      {e:'🎈', x:cardX-18,        y:cardY+60,       s:52},
+      {e:'🎉', x:cardX+cardW-34,  y:cardY+40,       s:52},
+      {e:'✨', x:cardX+30,        y:cardY+cardH-50, s:40},
+      {e:'🌟', x:cardX+cardW-30,  y:cardY+cardH-60, s:44},
+      {e:'🎊', x:cx-20,           y:cardY-30,       s:48},
+      {e:'🍰', x:cardX-10,        y:cy(cardH,.5)-20,s:44},
+      {e:'🎁', x:cardX+cardW+4,   y:cy(cardH,.5)+20,s:44},
+      {e:'⭐', x:cardX+80,        y:cardY-18,       s:36},
+      {e:'⭐', x:cardX+cardW-80,  y:cardY-18,       s:36},
+    ];
+    function cy(h,f){return cardY+h*f;}
+    decos.forEach(({e,x,y,s}) => { ctx.font=`${s}px serif`; ctx.fillText(e,x,y+s); });
+
+    // ── Top: cake emoji
+    ctx.font = '96px serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('🎂', cx, cardY + 115);
+
+    // ── "Happy Birthday" heading
+    ctx.font = 'bold 52px "Dancing Script", cursive';
+    ctx.textAlign = 'center';
+    ctx.fillStyle = '#f59e0b';
+    ctx.shadowColor = 'rgba(245,158,11,0.25)';
+    ctx.shadowBlur  = 12;
+    ctx.fillText('Happy Birthday,', cx, cardY + 185);
+    ctx.shadowBlur = 0;
+
+    // ── Name
+    ctx.font = 'bold 64px "Dancing Script", cursive';
+    ctx.fillStyle = '#d97706';
+    ctx.shadowColor = 'rgba(217,119,6,0.2)';
+    ctx.shadowBlur = 10;
+    ctx.fillText(TO + '!', cx, cardY + 255);
+    ctx.shadowBlur = 0;
+
+    // ── Divider
+    const divGrad = ctx.createLinearGradient(cardX+60, 0, cardX+cardW-60, 0);
+    divGrad.addColorStop(0, 'transparent');
+    divGrad.addColorStop(0.3, '#fcd34d');
+    divGrad.addColorStop(0.7, '#fcd34d');
+    divGrad.addColorStop(1, 'transparent');
+    ctx.strokeStyle = divGrad;
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(cardX+60, cardY+278); ctx.lineTo(cardX+cardW-60, cardY+278);
+    ctx.stroke();
+
+    // ── "Your Wish" label
+    ctx.font = '500 22px Quicksand, sans-serif';
+    ctx.fillStyle = '#9ca3af';
+    ctx.letterSpacing = '3px';
+    ctx.fillText('✦  YOUR WISH  ✦', cx, cardY + 315);
+
+    // ── Wish text (wrapped)
+    ctx.font = '700 34px "Dancing Script", cursive';
+    ctx.fillStyle = '#92400e';
+    ctx.shadowColor = 'rgba(146,64,14,.12)';
+    ctx.shadowBlur = 6;
+    wrapText(ctx, `"${wish}"`, cx, cardY + 365, cardW - 100, 46);
+    ctx.shadowBlur = 0;
+
+    // ── Bottom divider
+    ctx.strokeStyle = divGrad;
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(cardX+60, cardY+cardH-110); ctx.lineTo(cardX+cardW-60, cardY+cardH-110);
+    ctx.stroke();
+
+    // ── Footer
+    ctx.font = '500 24px "Dancing Script", cursive';
+    ctx.fillStyle = '#d97706';
+    ctx.fillText(`With love, ${FROM} 🎀`, cx, cardY + cardH - 75);
+
+    ctx.font = '500 18px Quicksand, sans-serif';
+    ctx.fillStyle = '#9ca3af';
+    ctx.fillText(new Date().toLocaleDateString('en-US', {year:'numeric',month:'long',day:'numeric'}), cx, cardY + cardH - 42);
+
+    // ── Download
+    canvas.toBlob(blob => {
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `birthday-wish-${TO.toLowerCase().replace(/\s+/g,'-')}.png`;
+      a.click();
+      URL.revokeObjectURL(url);
+      btn.innerHTML = '✅ Saved!';
+      btn.disabled = false;
+      setTimeout(() => { btn.innerHTML = '<span>🖼️</span> Save to Gallery'; }, 2500);
+    }, 'image/png');
+  }
+
+  // helpers
+  function roundRect(ctx, x, y, w, h, r) {
+    ctx.beginPath();
+    ctx.moveTo(x+r, y);
+    ctx.lineTo(x+w-r, y); ctx.arcTo(x+w,y,x+w,y+r,r);
+    ctx.lineTo(x+w, y+h-r); ctx.arcTo(x+w,y+h,x+w-r,y+h,r);
+    ctx.lineTo(x+r, y+h); ctx.arcTo(x,y+h,x,y+h-r,r);
+    ctx.lineTo(x, y+r); ctx.arcTo(x,y,x+r,y,r);
+    ctx.closePath();
+  }
+
+  function wrapText(ctx, text, x, y, maxW, lineH) {
+    const words = text.split(' ');
+    let line = '';
+    let curY = y;
+    for (let i = 0; i < words.length; i++) {
+      const test = line + words[i] + ' ';
+      if (ctx.measureText(test).width > maxW && line !== '') {
+        ctx.fillText(line.trim(), x, curY);
+        line = words[i] + ' ';
+        curY += lineH;
+      } else { line = test; }
+    }
+    ctx.fillText(line.trim(), x, curY);
+  }
+});
+
+// ── SHARE ───────────────────────────────────────────────
+document.getElementById('share-btn').addEventListener('click', async () => {
+  const text = `🎂 My birthday wish: "${wish}" — made on ${new Date().toLocaleDateString()}`;
+  if (navigator.share) {
+    try { await navigator.share({ title: 'My Birthday Wish 🎉', text }); } catch(_) {}
+  } else {
+    await navigator.clipboard.writeText(text).catch(() => {});
+    const btn = document.getElementById('share-btn');
+    btn.textContent = '✅ Copied!';
+    setTimeout(() => btn.innerHTML = '📸 Share Your Wish', 2000);
+  }
+});
 </script>
 </body>
 </html>
